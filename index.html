@@ -145,10 +145,10 @@
     <!-- Form Section -->
     <form id="log-form" action="#" method="POST" class="space-y-6" onsubmit="return false;">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Log ID (Replaced Serial Number) -->
+            <!-- Log ID (Now Auto-Populated and Mandatory) -->
             <div>
-                <label for="si_no" class="block mb-2 text-sm font-medium text-cyan-300">Log ID<span class="text-red-500 ml-1">*</span></label>
-                <input type="number" id="si_no" name="si_no" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 001-ALPHA-24">
+                <label for="si_no" class="block mb-2 text-sm font-medium text-cyan-300">Sequence No.<span class="text-red-500 ml-1">*</span></label>
+                <input type="number" id="si_no" name="si_no" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 15" readonly>
             </div>
             <!-- Date -->
             <div>
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <!-- Daily Status Report (Replaced Mission Accomplished) -->
+        <!-- Daily Status Report -->
         <div>
             <div class="flex justify-between items-center mb-2">
                 <label for="work_done" class="block text-sm font-medium text-cyan-300">Daily Status Report<span class="text-red-500 ml-1">*</span></label>
@@ -170,19 +170,19 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Start Time (Replaced In Time / Docking Time) -->
+            <!-- Start Time -->
             <div>
                 <label for="in_time" class="block mb-2 text-sm font-medium text-cyan-300">Start Time<span class="text-red-500 ml-1">*</span></label>
                 <input type="time" id="in_time" name="in_time" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
             </div>
-            <!-- End Time (Replaced Out Time / Launch Time) -->
+            <!-- End Time -->
             <div>
                 <label for="out_time" class="block mb-2 text-sm font-medium text-cyan-300">End Time<span class="text-red-500 ml-1">*</span></label>
                 <input type="time" id="out_time" name="out_time" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
             </div>
         </div>
 
-        <!-- Finalize Report (Replaced Transmit Log Signal) -->
+        <!-- Finalize Report -->
         <div>
             <button type="submit" id="submit-btn" class="submit-btn w-full text-white font-bold py-4 px-4 rounded-xl text-lg uppercase tracking-widest" disabled>
                 Finalize Report
@@ -265,9 +265,7 @@
         animateStars();
 
         // --- N8N API Integration URLs ---
-        // N8N_REWRITE_URL is for the AI Rewrite button (uses the URL you are debugging)
         const N8N_REWRITE_URL = "https://testinghellobiswa.app.n8n.cloud/webhook/AI_GenerateWorkDone";
-        // N8N_SUBMIT_URL is for the form submission (Finalize Report)
         const N8N_SUBMIT_URL = "https://testinghellobiswa.app.n8n.cloud/webhook/submitButton";
 
 
@@ -283,6 +281,20 @@
         const inTimeInput = document.getElementById('in_time');
         const outTimeInput = document.getElementById('out_time');
 
+        // --- Core Log ID Auto-Population Logic ---
+        function updateLogIdBasedOnDate(dateString) {
+            if (dateString) {
+                // We append 'T00:00:00' to ensure Date object is parsed in UTC/local time without shifting the date
+                const date = new Date(dateString + 'T00:00:00');
+                const dayOfMonth = date.getDate();
+                // Set the log ID to the day of the month
+                siNoInput.value = dayOfMonth;
+            } else {
+                siNoInput.value = '';
+            }
+            checkFormValidity();
+        }
+
         // --- Time and Date Initialization for User Convenience ---
         function initializeDateTime() {
             const today = new Date();
@@ -297,10 +309,14 @@
             dateInput.value = formattedDate;
             inTimeInput.value = formattedTime;
             outTimeInput.value = formattedTime;
+
+            // Automatically set Log ID on load
+            updateLogIdBasedOnDate(formattedDate);
         }
 
-        // --- Form Validation Logic ---
+        // --- Form Validation Logic (Explicitly checks all fields are non-empty) ---
         function checkFormValidity() {
+            // Log ID is auto-populated but must still contain a value.
             const isSiNoValid = siNoInput.value.trim() !== '';
             const isDateValid = dateInput.value.trim() !== '';
             const isWorkDoneValid = workDoneTextarea.value.trim() !== '';
@@ -315,9 +331,14 @@
         initializeDateTime();
         checkFormValidity();
 
-        // Add listeners to all fields to update button state dynamically
-        [siNoInput, dateInput, workDoneTextarea, inTimeInput, outTimeInput].forEach(input => {
+        // Add listeners to update button state dynamically, excluding siNoInput as it's date-driven
+        [dateInput, workDoneTextarea, inTimeInput, outTimeInput].forEach(input => {
             input.addEventListener('input', checkFormValidity);
+        });
+
+        // Add listener to date input to auto-update Log ID and re-check validity
+        dateInput.addEventListener('input', (e) => {
+            updateLogIdBasedOnDate(e.target.value);
         });
 
 
@@ -349,9 +370,8 @@
                 <span>FINALIZING...</span>`;
             submitBtn.disabled = true;
 
-            // Note: Field names match the HTML IDs (si_no, date, etc.)
             const submissionPayload = {
-                "Log ID": siNoInput.value, // Using string value as input type is 'number' in HTML
+                "Log ID": siNoInput.value,
                 "Date": dateInput.value,
                 "Daily Status Report": workDoneTextarea.value,
                 "StartTime": inTimeInput.value,
@@ -371,7 +391,7 @@
                 if (response.ok) {
                     showMessage("Report Finalized Successfully! N8N received the data.", false);
                     logForm.reset();
-                    initializeDateTime(); // Re-initialize date/time
+                    initializeDateTime(); // Re-initialize date/time and Log ID
                     checkFormValidity();
                 } else {
                     const errorText = await response.text();

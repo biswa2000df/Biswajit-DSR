@@ -527,6 +527,8 @@
        const N8N_SUBMIT_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/submitButton";
        // NEW: URL for fetching filled dates
        const N8N_DATE_FILL_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/dateFill";
+       // NEW: URL for fetching specific work done
+       const N8N_EDIT_WORK_DONE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/editWorkDone";
 
 
         // --- Element References ---
@@ -548,13 +550,12 @@
         // --- NEW: Custom Calendar Logic (Flatpickr Integration) ---
         let filledDays = []; // Store days (1-31) that are already filled
 
-        // Function to fetch filled dates
+        // Function to fetch filled dates (Runs on Open)
         async function fetchFilledDates(instance) {
             console.log("Calendar Opened: Fetching filled dates from API...");
             try {
-                // Using curl approach as requested.
-                // CRITICAL FIX: Added 'ngrok-skip-browser-warning' header to prevent HTML error pages.
-                const response = await fetch(N8N_DATE_FILL_URL, {
+                // REPLACED: Updated to use retry logic for consistency
+                const response = await fetchWithExponentialBackoff(N8N_DATE_FILL_URL, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -563,9 +564,7 @@
                 });
 
                 if (response.ok) {
-                    // Clone response to safely check text first if needed, but going straight to JSON for speed
                     const data = await response.json();
-
                     if (data && Array.isArray(data.AlreadyFieldDate)) {
                         // Ensure we work with Numbers so 1 == 1 (not "1" == 1)
                         filledDays = data.AlreadyFieldDate.map(d => Number(d));
@@ -577,11 +576,89 @@
                     }
                 } else {
                     console.warn(`Failed to fetch filled dates. Status: ${response.status}`);
-                    const errText = await response.text();
-                    console.error("Error body:", errText);
                 }
             } catch (error) {
                 console.error("Error fetching filled dates:", error);
+            }
+        }
+
+        // Helper: Convert 12h AM/PM (e.g. "9:42 AM") to 24h ("09:42")
+        function convert12hTo24h(timeStr) {
+            if (!timeStr) return '';
+            const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+            if (!match) return ''; // Return empty if format doesn't match
+
+            let [_, hours, minutes, modifier] = match;
+            hours = parseInt(hours, 10);
+
+            if (hours === 12 && modifier.toUpperCase() === 'AM') {
+                hours = 0;
+            } else if (hours !== 12 && modifier.toUpperCase() === 'PM') {
+                hours += 12;
+            }
+
+            return `${String(hours).padStart(2, '0')}:${minutes}`;
+        }
+
+        // Function to fetch specific work done for a date (Runs on Change)
+        async function fetchWorkDoneForDate(dayNumber) {
+            console.log(`Date Selected: Fetching work done for day ${dayNumber}...`);
+            showMessage("Fetching data for selected date...", false);
+
+            try {
+                // FIXED: Now using fetchWithExponentialBackoff to handle transient network/CORS issues
+                // Standardizing to POST as explicitly requested for sending data bodies
+                const response = await fetchWithExponentialBackoff(N8N_EDIT_WORK_DONE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    },
+                    body: JSON.stringify({ "preFieldDate": String(dayNumber) })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Fetched Work Done Data:", data);
+
+                    const record = data.PreFieldValueBasedOnDate;
+                    if (record) {
+                        // Update Sequence No
+                        if (record["SI No"]) siNoInput.value = record["SI No"];
+
+                        // Handle Work Done & Time Logic
+                        if (record["WorkDone"] && record["WorkDone"].trim() !== "") {
+                            // CASE 1: Data Exists - Populate Fields
+                            workDoneTextarea.value = record["WorkDone"];
+                            if (record["InTime"]) inTimeInput.value = convert12hTo24h(record["InTime"]);
+                            if (record["OutTime"]) outTimeInput.value = convert12hTo24h(record["OutTime"]);
+                            showMessage("Data loaded for selected date.", false);
+                        } else {
+                            // CASE 2: Empty Data (Not filled yet) - Reset to "Normal Display"
+                            // "normal display" means default calc values for a new entry
+                            workDoneTextarea.value = "";
+
+                            // Re-initialize time to current default (like a fresh load)
+                            const today = new Date();
+                            const hours = String(today.getHours()).padStart(2, '0');
+                            const minutes = String(today.getMinutes()).padStart(2, '0');
+                            const formattedTime = `${hours}:${minutes}`;
+
+                            inTimeInput.value = formattedTime;
+                            outTimeInput.value = calculateEndTime(formattedTime);
+
+                            // Log ID is already updated by updateLogIdBasedOnDate logic
+                        }
+
+                        // Re-run validation
+                        checkFormValidity();
+                    }
+                } else {
+                    console.warn("Failed to fetch work done details.");
+                }
+            } catch (error) {
+                console.error("Error fetching work done details:", error);
+                showMessage("Failed to fetch data. Check network/CORS.", true);
             }
         }
 
@@ -599,7 +676,6 @@
                 // Logic: "day is gray out meand clickable but but grayout"
 
                 // Requirement 1: STRICTLY DISABLE padding days from prev/next months
-                // "only display the this month data not other month if other month date is display then make it disable state"
                 if (dayElem.classList.contains("prevMonthDay") || dayElem.classList.contains("nextMonthDay")) {
                     dayElem.classList.add("flatpickr-disabled");
                     dayElem.style.opacity = "0.1"; // Visually fade out almost completely
@@ -611,18 +687,20 @@
                 const dayNumber = dayElem.dateObj.getDate();
 
                 // Requirement 2: Handle filled days (gray but clickable)
-                // "user field then disable but clickable in ggray"
                 if (filledDays.includes(dayNumber)) {
                     dayElem.classList.add("already-filled-date");
-                    // We do NOT disable it, so it remains clickable.
-                    // The CSS class .already-filled-date handles the visual "gray out" look.
                 }
             },
             onChange: function(selectedDates, dateStr, instance) {
                 // Ensure the native input event fires so our existing logic runs
-                // (Update Log ID, Check Form Validity)
                 dateInput.value = dateStr;
                 dateInput.dispatchEvent(new Event('input'));
+
+                // NEW: Trigger API to fetch data for the selected day
+                if (selectedDates.length > 0) {
+                    const dayNumber = selectedDates[0].getDate();
+                    fetchWorkDoneForDate(dayNumber);
+                }
             }
         });
 

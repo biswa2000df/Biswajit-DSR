@@ -6,6 +6,11 @@
     <title>Biswajit Sahoo - Daily Progress Report</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Flatpickr CSS (Dark Theme for Space Vibe) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.min.css">
+
     <style>
         /* Base Styles */
         body {
@@ -179,6 +184,157 @@
         }
         /* ----------------------------------------------------- */
 
+        /* ----------------------------------------------------- */
+        /* CUSTOM CALENDAR STYLES (ENHANCED HOLOGRAPHIC LOOK)    */
+        /* ----------------------------------------------------- */
+
+        /* Main Calendar Container */
+        .flatpickr-calendar {
+            background: rgba(15, 23, 42, 0.95) !important; /* Deep slate */
+            border: 1px solid rgba(56, 189, 248, 0.3) !important; /* Cyan border */
+            border-radius: 1rem !important;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8), 0 0 20px rgba(56, 189, 248, 0.15) !important;
+            font-family: 'Inter', sans-serif !important;
+            backdrop-filter: blur(15px) !important;
+            width: 320px !important; /* Slightly wider for breathing room */
+        }
+
+        /* Header Area (Month/Year) */
+        .flatpickr-months {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 5px;
+            padding-top: 5px;
+        }
+
+        .flatpickr-current-month {
+            font-size: 1.1rem !important;
+            font-weight: 700 !important;
+            color: #e2e8f0 !important; /* Light text */
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        .flatpickr-current-month input.cur-year {
+            color: #e2e8f0 !important;
+            font-weight: 700 !important;
+        }
+
+        /* Navigation Arrows */
+        .flatpickr-prev-month svg, .flatpickr-next-month svg {
+            fill: #94a3b8 !important; /* Slate gray */
+            transition: fill 0.3s ease;
+        }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg {
+            fill: #38bdf8 !important; /* Cyan on hover */
+            filter: drop-shadow(0 0 5px #38bdf8);
+        }
+
+        /* Weekdays row */
+        .flatpickr-weekdays {
+            background: transparent !important;
+            margin-top: 5px;
+        }
+
+        span.flatpickr-weekday {
+            color: #64748b !important; /* Muted slate */
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        /* Day Cells - Default State */
+        .flatpickr-day {
+            color: #cbd5e1 !important; /* Light slate text */
+            border-radius: 0.5rem !important; /* Rounded squares */
+            border: 1px solid transparent !important;
+            transition: all 0.2s ease;
+            background: transparent;
+            margin: 2px 0; /* Vertical spacing */
+            height: 36px;
+            line-height: 36px;
+        }
+
+        /* Hover State for Normal Days */
+        .flatpickr-day:hover {
+            background: rgba(56, 189, 248, 0.15) !important;
+            border-color: #38bdf8 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Today's Date */
+        .flatpickr-day.today {
+            border-color: #a855f7 !important; /* Purple border */
+            background: rgba(168, 85, 247, 0.1) !important;
+            color: #e879f9 !important;
+        }
+
+        /* Selected Date */
+        .flatpickr-day.selected {
+            background: linear-gradient(135deg, #38bdf8, #2563eb) !important; /* Cyan to Blue */
+            color: #ffffff !important;
+            border-color: transparent !important;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6) !important;
+            font-weight: bold;
+        }
+
+        /* ALREADY FILLED DATES - IMPROVED DESIGN
+           Concept: "Deactivated Sci-Fi Panel"
+        */
+        .flatpickr-day.already-filled-date {
+            /* Dark background with diagonal stripes pattern */
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(30, 41, 59, 0.4),
+                rgba(30, 41, 59, 0.4) 5px,
+                rgba(15, 23, 42, 0.4) 5px,
+                rgba(15, 23, 42, 0.4) 10px
+            ) !important;
+
+            color: #64748b !important; /* Dim text color */
+            border: 1px solid rgba(148, 163, 184, 0.2) !important; /* Faint border */
+            position: relative;
+        }
+
+        /* Success Checkmark Indicator */
+        .flatpickr-day.already-filled-date::after {
+            content: '✓';
+            position: absolute;
+            top: 1px;
+            right: 3px;
+            font-size: 10px;
+            color: #10b981; /* Emerald green glow */
+            text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+            font-weight: bold;
+        }
+
+        /* Hover Effect for Filled Dates (Showing it's clickable/editable) */
+        .flatpickr-day.already-filled-date:hover {
+            background: rgba(56, 189, 248, 0.1) !important; /* Slight Cyan fill */
+            border-color: #38bdf8 !important; /* Cyan border */
+            color: #ffffff !important; /* Bright white text */
+            cursor: pointer;
+            /* Remove stripes on hover for clarity */
+            background-image: none !important;
+        }
+
+        /* DISABLED DATES (Prev/Next Month) - Explicit Styling */
+        .flatpickr-day.flatpickr-disabled,
+        .flatpickr-day.prevMonthDay,
+        .flatpickr-day.nextMonthDay {
+            opacity: 0.1 !important;
+            pointer-events: none !important;
+            cursor: default !important;
+        }
+
+        .flatpickr-day.flatpickr-disabled:hover {
+            background: transparent !important;
+            border-color: transparent !important;
+            cursor: default !important;
+        }
+
+        /* ----------------------------------------------------- */
+
 
         /* Keyframe animations */
         @keyframes fadeIn {
@@ -219,6 +375,8 @@
             }
         }
     </style>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
@@ -364,9 +522,11 @@
         animateStars();
 
 
-       // --- N8N API Integration URLs (Placeholders) ---
+       // --- N8N API Integration URLs ---
        const N8N_REWRITE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/AI_GenerateWorkDone";
        const N8N_SUBMIT_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/submitButton";
+       // NEW: URL for fetching filled dates
+       const N8N_DATE_FILL_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/dateFill";
 
 
         // --- Element References ---
@@ -384,6 +544,87 @@
         const dateInput = document.getElementById('date');
         const inTimeInput = document.getElementById('in_time');
         const outTimeInput = document.getElementById('out_time');
+
+        // --- NEW: Custom Calendar Logic (Flatpickr Integration) ---
+        let filledDays = []; // Store days (1-31) that are already filled
+
+        // Function to fetch filled dates
+        async function fetchFilledDates(instance) {
+            console.log("Calendar Opened: Fetching filled dates from API...");
+            try {
+                // Using curl approach as requested.
+                // CRITICAL FIX: Added 'ngrok-skip-browser-warning' header to prevent HTML error pages.
+                const response = await fetch(N8N_DATE_FILL_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
+
+                if (response.ok) {
+                    // Clone response to safely check text first if needed, but going straight to JSON for speed
+                    const data = await response.json();
+
+                    if (data && Array.isArray(data.AlreadyFieldDate)) {
+                        // Ensure we work with Numbers so 1 == 1 (not "1" == 1)
+                        filledDays = data.AlreadyFieldDate.map(d => Number(d));
+                        console.log("Fetched filled dates successfully:", filledDays);
+                        // Force redraw to apply styles immediately
+                        if (instance) instance.redraw();
+                    } else {
+                        console.log("Data received but format was unexpected:", data);
+                    }
+                } else {
+                    console.warn(`Failed to fetch filled dates. Status: ${response.status}`);
+                    const errText = await response.text();
+                    console.error("Error body:", errText);
+                }
+            } catch (error) {
+                console.error("Error fetching filled dates:", error);
+            }
+        }
+
+        // Initialize Flatpickr
+        const fp = flatpickr("#date", {
+            dateFormat: "Y-m-d",
+            theme: "dark", // Using dark theme to match site
+            disableMobile: "true", // Force custom picker on mobile to show grayed out effect
+            onOpen: function(selectedDates, dateStr, instance) {
+                // REQ: "when i click on the the calender button then call the api"
+                // Pass the instance so we can redraw it once data arrives
+                fetchFilledDates(instance);
+            },
+            onDayCreate: function(dObj, dStr, fp, dayElem) {
+                // Logic: "day is gray out meand clickable but but grayout"
+
+                // Requirement 1: STRICTLY DISABLE padding days from prev/next months
+                // "only display the this month data not other month if other month date is display then make it disable state"
+                if (dayElem.classList.contains("prevMonthDay") || dayElem.classList.contains("nextMonthDay")) {
+                    dayElem.classList.add("flatpickr-disabled");
+                    dayElem.style.opacity = "0.1"; // Visually fade out almost completely
+                    dayElem.style.pointerEvents = "none"; // Make unclickable
+                    return; // Stop processing so we don't accidentally style them as filled
+                }
+
+                // Get the day number of the date being rendered (1-31)
+                const dayNumber = dayElem.dateObj.getDate();
+
+                // Requirement 2: Handle filled days (gray but clickable)
+                // "user field then disable but clickable in ggray"
+                if (filledDays.includes(dayNumber)) {
+                    dayElem.classList.add("already-filled-date");
+                    // We do NOT disable it, so it remains clickable.
+                    // The CSS class .already-filled-date handles the visual "gray out" look.
+                }
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                // Ensure the native input event fires so our existing logic runs
+                // (Update Log ID, Check Form Validity)
+                dateInput.value = dateStr;
+                dateInput.dispatchEvent(new Event('input'));
+            }
+        });
 
         // --- Time Formatting Utility ---
         /**
@@ -466,14 +707,19 @@
             const formattedTime = `${hours}:${minutes}`;
 
             // Set values
-            dateInput.value = formattedDate;
+
+            // NOTE: Flatpickr controls the value, so we update via Flatpickr instance
+            fp.setDate(formattedDate);
+            // Also manually trigger the update logic since programmatic set might not trigger 'change'
+            updateLogIdBasedOnDate(formattedDate);
+
             inTimeInput.value = formattedTime;
 
             // Automatically set end time 9 hours later
             outTimeInput.value = calculateEndTime(formattedTime);
 
             // Automatically set Log ID based on current day
-            updateLogIdBasedOnDate(formattedDate);
+            // updateLogIdBasedOnDate(formattedDate); // Already called above
         }
 
         // --- Form Validation Logic (Explicitly checks all fields are non-empty) ---
@@ -638,7 +884,7 @@
                 try {
                     result = await response.json();
                 } catch (e) {
-                     // Catch the 'Failed to execute 'text' or 'json' error specifically.
+                      // Catch the 'Failed to execute 'text' or 'json' error specifically.
                     throw new Error("Invalid response body from N8N. Ensure your 'Respond to Webhook' node is returning valid JSON, not an empty body.");
                 }
 
@@ -653,7 +899,7 @@
                         workDoneTextarea.value = textResult.trim();
                         showMessage("AI Rewrite successful, but JSON format was unexpected.", false);
                     } else {
-                         throw new Error("Invalid/Empty response from AI Rewrite N8N. Ensure your final node returns JSON with key 'rewritten_text'.");
+                          throw new Error("Invalid/Empty response from AI Rewrite N8N. Ensure your final node returns JSON with key 'rewritten_text'.");
                     }
                 }
 
@@ -689,4 +935,3 @@
 </body>
 
 </html>
-

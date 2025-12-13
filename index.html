@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biswajit Sahoo - Daily Progress Report</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
     <!-- Flatpickr CSS (Dark Theme for Space Vibe) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -34,42 +34,48 @@
 
         /* Glass Container - Enhanced Glassmorphism */
         .glass-container {
-            background: rgba(18, 18, 50, 0.7); /* Slightly lighter for better contrast */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(150, 150, 255, 0.1);
+            background: rgba(18, 18, 50, 0.6); /* Slightly more transparent */
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(150, 150, 255, 0.08);
             position: relative;
             animation: fadeIn 1.5s ease-out forwards;
-            /* Stronger inner shadow for depth */
-            box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.1);
+            /* Deep ambient shadow */
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
         /* Glowing Border Effect (Aurora) */
         .glass-container::before {
             content: '';
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            /* Finer gradient for a softer aurora effect */
-            background: conic-gradient(from 180deg at 50% 50%, #4f46e5 0deg, #a855f7 90deg, #4f46e5 180deg, #38bdf8 270deg, #4f46e5 360deg);
+            top: -1px; left: -1px; right: -1px; bottom: -1px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.4), rgba(168, 85, 247, 0.4), rgba(56, 189, 248, 0.4));
             z-index: -1;
-            filter: blur(25px); /* Increased blur for soft glow */
-            border-radius: 1.5rem;
-            opacity: 0.6; /* Soften the overall brightness */
+            filter: blur(20px);
+            border-radius: 1.6rem;
+            opacity: 0.5;
         }
 
-        /* Input Field Styling */
+        /* Input Field Styling - Premium Feel */
         .form-input {
-            background-color: rgba(0, 0, 15, 0.7);
-            border: 1px solid rgba(100, 100, 220, 0.2);
+            background-color: rgba(5, 5, 20, 0.6);
+            border: 1px solid rgba(100, 100, 255, 0.15);
             color: #ffffff;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #38bdf8; /* Brighter focus color */
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), 0 0 5px #38bdf8;
+            border-color: #38bdf8;
+            background-color: rgba(10, 10, 30, 0.8);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1), 0 0 15px rgba(56, 189, 248, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .form-input:hover {
+            border-color: rgba(168, 85, 247, 0.4);
         }
 
         /* Customizing native date/time icons */
@@ -77,34 +83,56 @@
         input[type="time"]::-webkit-calendar-picker-indicator {
             filter: invert(1) opacity(0.8);
             cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover,
+        input[type="time"]::-webkit-calendar-picker-indicator:hover {
+            transform: scale(1.1);
+            filter: invert(1) opacity(1) drop-shadow(0 0 2px #38bdf8);
         }
 
         /* Submit Button - Pulsating Energy */
         .submit-btn {
             background: linear-gradient(90deg, #4f46e5, #a855f7);
-            box-shadow: 0 0 25px rgba(129, 72, 227, 0.8);
+            box-shadow: 0 4px 15px rgba(129, 72, 227, 0.4);
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            animation: pulse 3s infinite ease-in-out;
-            transform: translateZ(0); /* Force hardware acceleration */
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
         }
 
-        /* Styles for disabled state */
+        /* Shimmer effect on button */
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:not(:disabled):hover::after {
+            left: 100%;
+            transition: 0.5s ease-in-out;
+        }
+
         .submit-btn:disabled {
-            background: #4a4a58; /* Darker, inactive color */
+            background: #334155;
             box-shadow: none;
             cursor: not-allowed;
-            opacity: 0.7;
-            animation: none;
+            opacity: 0.6;
         }
 
         .submit-btn:not(:disabled):hover {
             background: linear-gradient(90deg, #38bdf8, #a855f7);
-            transform: scale(1.02);
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
         }
 
         /* ----------------------------------------------------- */
-        /* AI REWRITE BUTTON DESIGN */
+        /* AI REWRITE BUTTON DESIGN (RESTORED HOLOGRAPHIC)       */
         /* ----------------------------------------------------- */
         .gemini-btn {
             background: rgba(10, 10, 30, 0.8); /* Darker internal fill */
@@ -115,7 +143,7 @@
             position: relative;
             overflow: hidden;
             z-index: 10;
-            /* NEW: Apply the whole-box pulsating shadow */
+            /* Apply the whole-box pulsating shadow */
             animation: gemini-pulse-shadow 4s infinite ease-in-out;
             transform: translateZ(0);
         }
@@ -142,13 +170,165 @@
 
         /* Glowing Logo inside the AI Rewrite button */
         .gemini-logo {
-            /* Use filter drop-shadow for a clean glow effect on the emoji */
             animation: logo-pulse 2s infinite ease-in-out;
         }
-        /* ----------------------------------------------------- */
 
         /* ----------------------------------------------------- */
-        /* TOAST NOTIFICATION STYLES (New) */
+        /* NEW: STARLIGHT HOLOGRAM TITLE (True Premium)          */
+        /* ----------------------------------------------------- */
+        .premium-header-container {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .premium-text-effect {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            /* Base Color fallback */
+            color: #fff;
+            position: relative;
+            z-index: 1;
+
+            /* The Magic Gradient */
+            background: linear-gradient(
+                to right,
+                #cbd5e1 20%,
+                #fff 40%,
+                #38bdf8 60%,
+                #cbd5e1 80%
+            );
+            background-size: 200% auto;
+
+            /* Clip to text */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            /* Animation */
+            animation: shine-text 5s linear infinite;
+
+            /* Glow filter */
+            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
+        }
+
+        @keyframes shine-text {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Decorative Underline */
+        .premium-underline {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #a855f7, #38bdf8, transparent);
+            margin: 5px auto 0;
+            border-radius: 100%;
+            opacity: 0.8;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+
+        .premium-subtitle {
+             color: #94a3b8;
+             font-weight: 600;
+             letter-spacing: 4px;
+             text-transform: uppercase;
+             font-size: 0.85rem;
+             margin-top: 1rem;
+             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* ----------------------------------------------------- */
+        /* IMPROVED DURATION CIRCLE DESIGN                       */
+        /* ----------------------------------------------------- */
+        .duration-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .duration-circle {
+            width: 100px; /* Slightly larger for better fit */
+            height: 100px;
+            border-radius: 50%;
+            /* Deep, premium dark gradient */
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            /* Inner shadow for depth + Outer glow */
+            box-shadow:
+                inset 0 4px 10px rgba(0,0,0,0.5),
+                0 0 20px rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(8px);
+            z-index: 5;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .duration-circle:hover {
+            transform: scale(1.05);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow:
+                inset 0 4px 10px rgba(0,0,0,0.5),
+                0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Rotating Ring Animation */
+        .duration-circle::before {
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, rgba(56, 189, 248, 0.6) 25%, transparent 50%, rgba(168, 85, 247, 0.6) 75%, transparent 100%);
+            animation: spin-ring 8s linear infinite;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(2px);
+        }
+
+        @keyframes spin-ring {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Text inside circle */
+        .duration-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            text-align: center;
+        }
+
+        /* Label at bottom of circle */
+        .duration-label {
+            position: absolute;
+            bottom: 12px;
+            font-size: 0.55rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        /* Highlight text color */
+        .highlight-text {
+            background: linear-gradient(to right, #ffffff, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ----------------------------------------------------- */
+        /* TOAST NOTIFICATION STYLES */
         /* ----------------------------------------------------- */
         #toast-notification {
             position: fixed;
@@ -157,132 +337,32 @@
             z-index: 1000;
             min-width: 250px;
             padding: 1rem;
-            border-radius: 0.75rem; /* rounded-xl */
+            border-radius: 0.75rem;
             font-weight: 600;
-            /* Glassmorphism background for the toast */
-            background: rgba(18, 18, 50, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(150, 150, 255, 0.2);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            transform: translateX(120%); /* Start off-screen */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateX(120%);
             transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        #toast-notification.show {
-            transform: translateX(0); /* Slide in */
-        }
-
-        #toast-notification.success {
-            /* Left border indicator for success */
-            border-left: 5px solid #10b981; /* Tailwind emerald-500 */
-        }
-
-        #toast-notification.error {
-            /* Left border indicator for error */
-            border-left: 5px solid #ef4444; /* Tailwind red-500 */
-        }
-        /* ----------------------------------------------------- */
+        #toast-notification.show { transform: translateX(0); }
+        #toast-notification.success { border-left: 5px solid #10b981; }
+        #toast-notification.error { border-left: 5px solid #ef4444; }
 
         /* ----------------------------------------------------- */
         /* CUSTOM CALENDAR STYLES (ENHANCED HOLOGRAPHIC LOOK)    */
         /* ----------------------------------------------------- */
-
-        /* Main Calendar Container */
         .flatpickr-calendar {
-            background: rgba(15, 23, 42, 0.95) !important; /* Deep slate */
-            border: 1px solid rgba(56, 189, 248, 0.3) !important; /* Cyan border */
+            background: rgba(15, 23, 42, 0.98) !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
             border-radius: 1rem !important;
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8), 0 0 20px rgba(56, 189, 248, 0.15) !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important;
             font-family: 'Inter', sans-serif !important;
-            backdrop-filter: blur(15px) !important;
-            width: 320px !important; /* Slightly wider for breathing room */
         }
-
-        /* Header Area (Month/Year) */
-        .flatpickr-months {
-            background: transparent !important;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 5px;
-            padding-top: 5px;
-        }
-
-        .flatpickr-current-month {
-            font-size: 1.1rem !important;
-            font-weight: 700 !important;
-            color: #e2e8f0 !important; /* Light text */
-        }
-
-        .flatpickr-current-month .flatpickr-monthDropdown-months,
-        .flatpickr-current-month input.cur-year {
-            color: #e2e8f0 !important;
-            font-weight: 700 !important;
-        }
-
-        /* Navigation Arrows */
-        .flatpickr-prev-month svg, .flatpickr-next-month svg {
-            fill: #94a3b8 !important; /* Slate gray */
-            transition: fill 0.3s ease;
-        }
-        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg {
-            fill: #38bdf8 !important; /* Cyan on hover */
-            filter: drop-shadow(0 0 5px #38bdf8);
-        }
-
-        /* Weekdays row */
-        .flatpickr-weekdays {
-            background: transparent !important;
-            margin-top: 5px;
-        }
-
-        span.flatpickr-weekday {
-            color: #64748b !important; /* Muted slate */
-            font-weight: 600 !important;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        /* Day Cells - Default State */
-        .flatpickr-day {
-            color: #cbd5e1 !important; /* Light slate text */
-            border-radius: 0.5rem !important; /* Rounded squares */
-            border: 1px solid transparent !important;
-            transition: all 0.2s ease;
-            background: transparent;
-            margin: 2px 0; /* Vertical spacing */
-            height: 36px;
-            line-height: 36px;
-        }
-
-        /* Hover State for Normal Days */
-        .flatpickr-day:hover {
-            background: rgba(56, 189, 248, 0.15) !important;
-            border-color: #38bdf8 !important;
-            color: #ffffff !important;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
-        }
-
-        /* Today's Date */
-        .flatpickr-day.today {
-            border-color: #a855f7 !important; /* Purple border */
-            background: rgba(168, 85, 247, 0.1) !important;
-            color: #e879f9 !important;
-        }
-
-        /* Selected Date */
-        .flatpickr-day.selected {
-            background: linear-gradient(135deg, #38bdf8, #2563eb) !important; /* Cyan to Blue */
-            color: #ffffff !important;
-            border-color: transparent !important;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6) !important;
-            font-weight: bold;
-        }
-
-        /* ALREADY FILLED DATES - IMPROVED DESIGN
-           Concept: "Deactivated Sci-Fi Panel"
-        */
         .flatpickr-day.already-filled-date {
-            /* Dark background with diagonal stripes pattern */
             background: repeating-linear-gradient(
                 45deg,
                 rgba(30, 41, 59, 0.4),
@@ -290,88 +370,40 @@
                 rgba(15, 23, 42, 0.4) 5px,
                 rgba(15, 23, 42, 0.4) 10px
             ) !important;
-
-            color: #64748b !important; /* Dim text color */
-            border: 1px solid rgba(148, 163, 184, 0.2) !important; /* Faint border */
+            color: #64748b !important;
+            border: 1px solid rgba(148, 163, 184, 0.1) !important;
             position: relative;
         }
-
-        /* Success Checkmark Indicator */
         .flatpickr-day.already-filled-date::after {
             content: '✓';
             position: absolute;
-            top: 1px;
-            right: 3px;
+            top: 2px; right: 4px;
             font-size: 10px;
-            color: #10b981; /* Emerald green glow */
-            text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
-            font-weight: bold;
+            color: #10b981;
+        }
+        .flatpickr-day.selected {
+            background: linear-gradient(135deg, #38bdf8, #2563eb) !important;
+            border: none !important;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5) !important;
         }
 
-        /* Hover Effect for Filled Dates (Showing it's clickable/editable) */
-        .flatpickr-day.already-filled-date:hover {
-            background: rgba(56, 189, 248, 0.1) !important; /* Slight Cyan fill */
-            border-color: #38bdf8 !important; /* Cyan border */
-            color: #ffffff !important; /* Bright white text */
-            cursor: pointer;
-            /* Remove stripes on hover for clarity */
-            background-image: none !important;
-        }
-
-        /* DISABLED DATES (Prev/Next Month) - Explicit Styling */
-        .flatpickr-day.flatpickr-disabled,
-        .flatpickr-day.prevMonthDay,
-        .flatpickr-day.nextMonthDay {
-            opacity: 0.1 !important;
-            pointer-events: none !important;
-            cursor: default !important;
-        }
-
-        .flatpickr-day.flatpickr-disabled:hover {
-            background: transparent !important;
-            border-color: transparent !important;
-            cursor: default !important;
-        }
-
-        /* ----------------------------------------------------- */
-
-
-        /* Keyframe animations */
+        /* Helper animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 25px rgba(129, 72, 227, 0.8);
-            }
-            50% {
-                box-shadow: 0 0 45px rgba(168, 85, 247, 1);
-            }
+        @keyframes logo-pulse {
+            0%, 100% { filter: drop-shadow(0 0 2px rgba(56,189,248,0.8)); opacity: 1; }
+            50% { filter: drop-shadow(0 0 8px rgba(168,85,247,0.8)); opacity: 0.8; }
         }
 
+        /* Restored Gemini Pulse Shadow Animation */
         @keyframes gemini-pulse-shadow {
             0%, 100% {
                 box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), 0 0 5px rgba(56, 189, 248, 0.8);
             }
             50% {
-                /* Shifts slightly towards purple at the peak of the pulse */
                 box-shadow: 0 0 30px rgba(56, 189, 248, 1), 0 0 10px rgba(168, 85, 247, 0.5);
-            }
-        }
-
-        /* Keyframe for the glowing logo effect */
-        @keyframes logo-pulse {
-            0%, 100% {
-                /* Subtle white/cyan glow */
-                filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 4px #38bdf8);
-                opacity: 1;
-            }
-            50% {
-                /* Stronger white/magenta glow */
-                filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 10px #a855f7);
-                opacity: 0.8;
             }
         }
     </style>
@@ -380,35 +412,38 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-<!-- Canvas for the animated starfield background with parallax -->
+<!-- Canvas for the animated starfield background -->
 <canvas id="starfield"></canvas>
 
-<!-- New Toast Notification Element (Top Right) -->
+<!-- New Toast Notification Element -->
 <div id="toast-notification" class="flex items-center space-x-3" role="alert" aria-live="assertive">
     <span id="toast-icon">🚀</span>
     <span id="toast-message"></span>
 </div>
 
 <div class="glass-container w-full max-w-2xl p-8 md:p-12 rounded-3xl shadow-2xl">
-    <!-- Header Section -->
+    <!-- Header Section (Brand New Starlight Hologram Design) -->
     <div class="text-center mb-8">
-        <h1 class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-500 mb-2 tracking-tighter">
-            BISWAJIT SAHOO
-        </h1>
-        <p class="text-md text-gray-400 font-bold">Daily Progress Report</p>
+        <div class="premium-header-container">
+            <h1 class="text-5xl md:text-6xl premium-text-effect mb-0 tracking-tighter">
+                BISWAJIT SAHOO
+            </h1>
+            <div class="premium-underline"></div>
+        </div>
+        <p class="premium-subtitle">Daily Progress Report</p>
     </div>
 
     <!-- Form Section -->
     <form id="log-form" action="#" method="POST" class="space-y-6" onsubmit="return false;">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Log ID (Now Auto-Populated and Mandatory) -->
+            <!-- Log ID -->
             <div>
-                <label for="si_no" class="block mb-2 text-sm font-medium text-cyan-300">Sequence No.<span class="text-red-500 ml-1">*</span></label>
+                <label for="si_no" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">Sequence No.<span class="text-red-500 ml-1">*</span></label>
                 <input type="number" id="si_no" name="si_no" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 15" readonly>
             </div>
             <!-- Date -->
             <div>
-                <label for="date" class="block mb-2 text-sm font-medium text-cyan-300">Date<span class="text-red-500 ml-1">*</span></label>
+                <label for="date" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">Date<span class="text-red-500 ml-1">*</span></label>
                 <input type="date" id="date" name="date" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
             </div>
         </div>
@@ -416,25 +451,38 @@
         <!-- Daily Status Report -->
         <div>
             <div class="flex justify-between items-center mb-2">
-                <label for="work_done" class="block text-sm font-medium text-cyan-300">Daily Status Report<span class="text-red-500 ml-1">*</span></label>
-                <!-- IMPRESSIVE AI REWRITE BUTTON -->
-                <button type="button" id="gemini-suggest-btn" class="gemini-btn text-xs font-semibold py-2 px-4 rounded-full flex items-center space-x-1 uppercase tracking-wider">
+                <label for="work_done" class="block text-sm font-semibold text-cyan-300 tracking-wide">Daily Status Report<span class="text-red-500 ml-1">*</span></label>
+                <!-- AI REWRITE BUTTON -->
+                <button type="button" id="gemini-suggest-btn" class="gemini-btn text-xs font-semibold py-2 px-4 rounded-full flex items-center space-x-2 uppercase tracking-wider">
                     <span class="text-lg gemini-logo">✨</span>
-                    <span>AI Rewrite (via N8N)</span>
+                    <span>AI Rewrite</span>
                 </button>
             </div>
             <textarea id="work_done" name="work_done" rows="5" class="form-input w-full p-4 rounded-xl focus:ring-2 focus:ring-cyan-500" placeholder="Enter keywords (e.g., 'fixed UI bug on login') or a draft, then click AI Rewrite..."></textarea>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Time and Duration Section (Smart Layout) -->
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
             <!-- Start Time -->
-            <div>
-                <label for="in_time" class="block mb-2 text-sm font-medium text-cyan-300">Start Time <span class="text-red-500 ml-1">*</span></label>
+            <div class="w-full">
+                <label for="in_time" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">Start Time <span class="text-red-500 ml-1">*</span></label>
                 <input type="time" id="in_time" name="in_time" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
             </div>
+
+            <!-- Enhanced Duration Circle (Center) -->
+            <div class="duration-container mt-6 md:mt-0">
+                <div class="duration-circle">
+                    <!-- Content injected by JS -->
+                    <div id="duration-content" class="duration-content">
+                        <span class="text-3xl font-bold highlight-text">--</span>
+                    </div>
+                    <span class="duration-label">WORKED</span>
+                </div>
+            </div>
+
             <!-- End Time -->
-            <div>
-                <label for="out_time" class="block mb-2 text-sm font-medium text-cyan-300">End Time<span class="text-red-500 ml-1">*</span></label>
+            <div class="w-full">
+                <label for="out_time" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">End Time<span class="text-red-500 ml-1">*</span></label>
                 <input type="time" id="out_time" name="out_time" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
             </div>
         </div>
@@ -445,7 +493,6 @@
                 Finalize Report
             </button>
         </div>
-        <!-- Removed old message container -->
     </form>
 </div>
 
@@ -525,16 +572,14 @@
        // --- N8N API Integration URLs ---
        const N8N_REWRITE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/AI_GenerateWorkDone";
        const N8N_SUBMIT_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/submitButton";
-       // NEW: URL for fetching filled dates
        const N8N_DATE_FILL_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/dateFill";
-       // NEW: URL for fetching specific work done
        const N8N_EDIT_WORK_DONE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/editWorkDone";
 
 
         // --- Element References ---
         const logForm = document.getElementById('log-form');
         const submitBtn = document.getElementById('submit-btn');
-        // NEW TOAST ELEMENTS
+        // Toast
         const toastNotification = document.getElementById('toast-notification');
         const toastMessage = document.getElementById('toast-message');
         const toastIcon = document.getElementById('toast-icon');
@@ -547,14 +592,15 @@
         const inTimeInput = document.getElementById('in_time');
         const outTimeInput = document.getElementById('out_time');
 
-        // --- NEW: Custom Calendar Logic (Flatpickr Integration) ---
-        let filledDays = []; // Store days (1-31) that are already filled
+        // Duration Content Wrapper
+        const durationContent = document.getElementById('duration-content');
 
-        // Function to fetch filled dates (Runs on Open)
+        // --- Custom Calendar Logic ---
+        let filledDays = [];
+
         async function fetchFilledDates(instance) {
-            console.log("Calendar Opened: Fetching filled dates from API...");
+            console.log("Calendar Opened: Fetching filled dates...");
             try {
-                // REPLACED: Updated to use retry logic for consistency
                 const response = await fetchWithExponentialBackoff(N8N_DATE_FILL_URL, {
                     method: 'GET',
                     headers: {
@@ -566,27 +612,20 @@
                 if (response.ok) {
                     const data = await response.json();
                     if (data && Array.isArray(data.AlreadyFieldDate)) {
-                        // Ensure we work with Numbers so 1 == 1 (not "1" == 1)
                         filledDays = data.AlreadyFieldDate.map(d => Number(d));
-                        console.log("Fetched filled dates successfully:", filledDays);
-                        // Force redraw to apply styles immediately
+                        console.log("Fetched filled dates:", filledDays);
                         if (instance) instance.redraw();
-                    } else {
-                        console.log("Data received but format was unexpected:", data);
                     }
-                } else {
-                    console.warn(`Failed to fetch filled dates. Status: ${response.status}`);
                 }
             } catch (error) {
                 console.error("Error fetching filled dates:", error);
             }
         }
 
-        // Helper: Convert 12h AM/PM (e.g. "9:42 AM") to 24h ("09:42")
         function convert12hTo24h(timeStr) {
             if (!timeStr) return '';
             const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
-            if (!match) return ''; // Return empty if format doesn't match
+            if (!match) return '';
 
             let [_, hours, minutes, modifier] = match;
             hours = parseInt(hours, 10);
@@ -600,14 +639,9 @@
             return `${String(hours).padStart(2, '0')}:${minutes}`;
         }
 
-        // Function to fetch specific work done for a date (Runs on Change)
         async function fetchWorkDoneForDate(dayNumber) {
-            console.log(`Date Selected: Fetching work done for day ${dayNumber}...`);
             showMessage("Fetching data for selected date...", false);
-
             try {
-                // FIXED: Now using fetchWithExponentialBackoff to handle transient network/CORS issues
-                // Standardizing to POST as explicitly requested for sending data bodies
                 const response = await fetchWithExponentialBackoff(N8N_EDIT_WORK_DONE_URL, {
                     method: 'POST',
                     headers: {
@@ -619,26 +653,17 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Fetched Work Done Data:", data);
-
                     const record = data.PreFieldValueBasedOnDate;
                     if (record) {
-                        // Update Sequence No
                         if (record["SI No"]) siNoInput.value = record["SI No"];
 
-                        // Handle Work Done & Time Logic
                         if (record["WorkDone"] && record["WorkDone"].trim() !== "") {
-                            // CASE 1: Data Exists - Populate Fields
                             workDoneTextarea.value = record["WorkDone"];
                             if (record["InTime"]) inTimeInput.value = convert12hTo24h(record["InTime"]);
                             if (record["OutTime"]) outTimeInput.value = convert12hTo24h(record["OutTime"]);
                             showMessage("Data loaded for selected date.", false);
                         } else {
-                            // CASE 2: Empty Data (Not filled yet) - Reset to "Normal Display"
-                            // "normal display" means default calc values for a new entry
                             workDoneTextarea.value = "";
-
-                            // Re-initialize time to current default (like a fresh load)
                             const today = new Date();
                             const hours = String(today.getHours()).padStart(2, '0');
                             const minutes = String(today.getMinutes()).padStart(2, '0');
@@ -646,57 +671,40 @@
 
                             inTimeInput.value = formattedTime;
                             outTimeInput.value = calculateEndTime(formattedTime);
-
-                            // Log ID is already updated by updateLogIdBasedOnDate logic
                         }
-
-                        // Re-run validation
+                        updateDurationDisplay();
                         checkFormValidity();
                     }
-                } else {
-                    console.warn("Failed to fetch work done details.");
                 }
             } catch (error) {
-                console.error("Error fetching work done details:", error);
-                showMessage("Failed to fetch data. Check network/CORS.", true);
+                console.error("Error:", error);
+                showMessage("Failed to fetch data.", true);
             }
         }
 
         // Initialize Flatpickr
         const fp = flatpickr("#date", {
             dateFormat: "Y-m-d",
-            theme: "dark", // Using dark theme to match site
-            disableMobile: "true", // Force custom picker on mobile to show grayed out effect
+            theme: "dark",
+            disableMobile: "true",
             onOpen: function(selectedDates, dateStr, instance) {
-                // REQ: "when i click on the the calender button then call the api"
-                // Pass the instance so we can redraw it once data arrives
                 fetchFilledDates(instance);
             },
             onDayCreate: function(dObj, dStr, fp, dayElem) {
-                // Logic: "day is gray out meand clickable but but grayout"
-
-                // Requirement 1: STRICTLY DISABLE padding days from prev/next months
                 if (dayElem.classList.contains("prevMonthDay") || dayElem.classList.contains("nextMonthDay")) {
                     dayElem.classList.add("flatpickr-disabled");
-                    dayElem.style.opacity = "0.1"; // Visually fade out almost completely
-                    dayElem.style.pointerEvents = "none"; // Make unclickable
-                    return; // Stop processing so we don't accidentally style them as filled
+                    dayElem.style.opacity = "0.1";
+                    dayElem.style.pointerEvents = "none";
+                    return;
                 }
-
-                // Get the day number of the date being rendered (1-31)
                 const dayNumber = dayElem.dateObj.getDate();
-
-                // Requirement 2: Handle filled days (gray but clickable)
                 if (filledDays.includes(dayNumber)) {
                     dayElem.classList.add("already-filled-date");
                 }
             },
             onChange: function(selectedDates, dateStr, instance) {
-                // Ensure the native input event fires so our existing logic runs
                 dateInput.value = dateStr;
                 dateInput.dispatchEvent(new Event('input'));
-
-                // NEW: Trigger API to fetch data for the selected day
                 if (selectedDates.length > 0) {
                     const dayNumber = selectedDates[0].getDate();
                     fetchWorkDoneForDate(dayNumber);
@@ -704,63 +712,78 @@
             }
         });
 
-        // --- Time Formatting Utility ---
-        /**
-         * Converts a 24-hour time string (HH:MM) to a 12-hour AM/PM string (H:MM AM/PM).
-         */
         function formatTimeForN8N(time24h) {
             if (!time24h) return '';
             const [hours, minutes] = time24h.split(':').map(Number);
-
             let h = hours;
             const m = String(minutes).padStart(2, '0');
             let modifier = 'AM';
-
-            if (h === 0) {
-                h = 12; // Midnight is 12 AM
-            } else if (h === 12) {
-                modifier = 'PM'; // Noon is 12 PM
-            } else if (h > 12) {
+            if (h === 0) h = 12;
+            else if (h === 12) modifier = 'PM';
+            else if (h > 12) {
                 h = h - 12;
                 modifier = 'PM';
             }
-
             return `${h}:${m} ${modifier}`;
         }
 
-        // --- 9-Hour Shift Calculation ---
-        /**
-         * Calculates the time exactly 9 hours after the given 24-hour time string.
-         * Returns time in HH:MM (24-hour format).
-         */
         function calculateEndTime(startTime24h) {
             if (!startTime24h) return '';
             const [startHour, startMinute] = startTime24h.split(':').map(Number);
             const shiftHours = 9;
-
             let endHour = startHour + shiftHours;
-            let endMinute = startMinute; // Minutes remain the same
-
-            // Handle wrap-around midnight (e.g., 23:00 + 9 hours = 08:00 next day)
-            if (endHour >= 24) {
-                endHour %= 24;
-            }
-
-            // Format back to HH:MM string (24-hour)
+            let endMinute = startMinute;
+            if (endHour >= 24) endHour %= 24;
             const formattedEndHour = String(endHour).padStart(2, '0');
             const formattedEndMinute = String(endMinute).padStart(2, '0');
-
             return `${formattedEndHour}:${formattedEndMinute}`;
         }
 
+        // --- IMPROVED: Smart Duration Display ---
+        function updateDurationDisplay() {
+            const startVal = inTimeInput.value;
+            const endVal = outTimeInput.value;
 
-        // --- Core Log ID Auto-Population Logic ---
+            if (!startVal || !endVal) {
+                durationContent.innerHTML = `<span class="text-3xl font-bold highlight-text">--</span>`;
+                return;
+            }
+
+            const [startH, startM] = startVal.split(':').map(Number);
+            const [endH, endM] = endVal.split(':').map(Number);
+
+            let startTotalMins = (startH * 60) + startM;
+            let endTotalMins = (endH * 60) + endM;
+
+            // Handle next day overlap
+            if (endTotalMins < startTotalMins) {
+                endTotalMins += (24 * 60);
+            }
+
+            const diffMins = endTotalMins - startTotalMins;
+            const hours = Math.floor(diffMins / 60);
+            const minutes = diffMins % 60;
+
+            // LOGIC: If minutes > 0, stack vertically. If minutes == 0, show big number.
+            if (minutes === 0) {
+                // Single Line: Large Number
+                durationContent.innerHTML = `
+                    <span class="text-4xl font-black highlight-text leading-none">${hours}<span class="text-xl font-medium text-cyan-300 ml-0.5">h</span></span>
+                `;
+            } else {
+                // Two Lines: Stacked
+                durationContent.innerHTML = `
+                    <div class="flex flex-col items-center justify-center -space-y-1 mt-1">
+                        <span class="text-3xl font-bold highlight-text leading-none">${hours}<span class="text-sm font-normal text-cyan-300 ml-0.5">h</span></span>
+                        <span class="text-xl font-bold text-cyan-100 leading-none">${minutes}<span class="text-xs font-normal text-cyan-400 ml-0.5">m</span></span>
+                    </div>
+                `;
+            }
+        }
+
         function updateLogIdBasedOnDate(dateString) {
             if (dateString) {
-                // dateString is already in YYYY-MM-DD format
-                // Use a local date object to avoid timezone issues when getting the day
                 const dayOfMonth = new Date(dateString + 'T00:00:00').getDate();
-                // Set the log ID to the day of the month
                 siNoInput.value = dayOfMonth;
             } else {
                 siNoInput.value = '';
@@ -768,112 +791,81 @@
             checkFormValidity();
         }
 
-        // --- Time and Date Initialization for User Convenience (IMPROVED DATE LOGIC) ---
         function initializeDateTime() {
             const today = new Date();
-
-            // 1. Get current date using LOCAL methods
             const year = today.getFullYear();
-            // getMonth() is 0-indexed, so add 1
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             const formattedDate = `${year}-${month}-${day}`;
-
-            // 2. Get current time in HH:MM format (24-hour)
             const hours = String(today.getHours()).padStart(2, '0');
             const minutes = String(today.getMinutes()).padStart(2, '0');
             const formattedTime = `${hours}:${minutes}`;
 
-            // Set values
-
-            // NOTE: Flatpickr controls the value, so we update via Flatpickr instance
             fp.setDate(formattedDate);
-            // Also manually trigger the update logic since programmatic set might not trigger 'change'
             updateLogIdBasedOnDate(formattedDate);
-
             inTimeInput.value = formattedTime;
-
-            // Automatically set end time 9 hours later
             outTimeInput.value = calculateEndTime(formattedTime);
-
-            // Automatically set Log ID based on current day
-            // updateLogIdBasedOnDate(formattedDate); // Already called above
+            updateDurationDisplay();
         }
 
-        // --- Form Validation Logic (Explicitly checks all fields are non-empty) ---
         function checkFormValidity() {
-            // Log ID is auto-populated but must still contain a value.
             const isSiNoValid = siNoInput.value.trim() !== '';
             const isDateValid = dateInput.value.trim() !== '';
             const isWorkDoneValid = workDoneTextarea.value.trim() !== '';
             const isInTimeValid = inTimeInput.value.trim() !== '';
             const isOutTimeValid = outTimeInput.value.trim() !== '';
-
-            // Enable button only if ALL fields are valid (filled)
             submitBtn.disabled = !(isSiNoValid && isDateValid && isWorkDoneValid && isInTimeValid && isOutTimeValid);
         }
 
-        // Initialize values and check validity on load
         initializeDateTime();
         checkFormValidity();
 
-        // Add listeners to update button state dynamically, excluding siNoInput as it's date-driven
         [dateInput, workDoneTextarea, inTimeInput, outTimeInput].forEach(input => {
             input.addEventListener('input', checkFormValidity);
         });
 
-        // Add listener to date input to auto-update Log ID and re-check validity
         dateInput.addEventListener('input', (e) => {
             updateLogIdBasedOnDate(e.target.value);
         });
 
-        // --- Automatic End Time Update on Start Time Change ---
         inTimeInput.addEventListener('input', (e) => {
             const newStartTime = e.target.value;
             outTimeInput.value = calculateEndTime(newStartTime);
+            updateDurationDisplay();
             checkFormValidity();
         });
 
+        outTimeInput.addEventListener('input', () => {
+             updateDurationDisplay();
+             checkFormValidity();
+        });
 
-        // --- NEW: Function to display messages as a Toast Notification ---
         function showMessage(message, isError = false) {
-            // Reset classes
             toastNotification.classList.remove('show', 'success', 'error');
-
-            // Set message and style
             toastMessage.textContent = message;
             if (isError) {
                 toastNotification.classList.add('error');
-                toastIcon.textContent = '🚨'; // Error icon
+                toastIcon.textContent = '🚨';
             } else {
                 toastNotification.classList.add('success');
-                toastIcon.textContent = '✅'; // Success icon
+                toastIcon.textContent = '✅';
             }
-
-            // Show the toast (slide in)
             toastNotification.classList.add('show');
-
-            // Hide the toast after 5 seconds (slide out)
             setTimeout(() => {
                 toastNotification.classList.remove('show');
             }, 5000);
         }
 
-
-        // --- Form Submission Logic (Finalize Report) ---
         logForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Prevent default browser form submission
-
+            e.preventDefault();
             if (submitBtn.disabled) {
-                showMessage("All mandatory fields must be completed before finalizing the report.", true);
+                showMessage("All mandatory fields must be completed.", true);
                 return;
             }
-
-            // --- CONVERT TIME TO AM/PM FORMAT HERE ---
             const formattedInTime = formatTimeForN8N(inTimeInput.value);
             const formattedOutTime = formatTimeForN8N(outTimeInput.value);
-
             const originalButtonText = submitBtn.innerHTML;
+
             submitBtn.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -882,13 +874,12 @@
                 <span>FINALIZING...</span>`;
             submitBtn.disabled = true;
 
-            // --- USE FORMATTED TIME IN PAYLOAD ---
             const submissionPayload = {
                 "Log ID": siNoInput.value,
                 "Date": dateInput.value,
                 "Daily Status Report": workDoneTextarea.value,
-                "StartTime": formattedInTime, // Sent as 12h AM/PM
-                "EndTime": formattedOutTime,   // Sent as 12h AM/PM
+                "StartTime": formattedInTime,
+                "EndTime": formattedOutTime,
                 "submittedAt": new Date().toISOString(),
                 "formMode": "web-submission"
             };
@@ -902,50 +893,41 @@
                 });
 
                 if (response.ok) {
-                    showMessage("Report Finalized Successfully! N8N received the data.", false);
+                    showMessage("Report Finalized Successfully!", false);
                     logForm.reset();
-                    initializeDateTime(); // Re-initialize date/time and Log ID
+                    initializeDateTime();
                     checkFormValidity();
                 } else {
                     const errorText = await response.text();
-                    throw new Error(`N8N Webhook failure (${response.status}): ${errorText.substring(0, 100)}...`);
+                    throw new Error(`N8N Webhook failure: ${errorText.substring(0, 50)}...`);
                 }
-
             } catch (error) {
-                let errorMessage = `Finalization Failed. Error: ${error.message}`;
-                if (error.message.includes("Failed to fetch")) {
-                    errorMessage = "Finalization Failed (Network Error). Check Console for CORS Policy Block and ensure N8N allows your domain.";
-                }
-                console.error('Error during log transmission:', error);
-                showMessage(errorMessage, true);
+                console.error('Submission Error:', error);
+                showMessage("Finalization Failed. Check Console.", true);
             } finally {
                 submitBtn.innerHTML = originalButtonText;
-                // Only re-enable if there was an error, otherwise it stays disabled until valid input is given.
                 if (!response?.ok) {
                     submitBtn.disabled = false;
                 }
             }
         });
 
-        // --- AI Rewrite Logic (via N8N) ---
         suggestBtn.addEventListener('click', async () => {
             const userQuery = workDoneTextarea.value.trim();
             if (!userQuery) {
-                showMessage("Enter keywords first (e.g., 'fixed gravity shielding') before AI Rewrite.", true);
+                showMessage("Enter keywords first.", true);
                 return;
             }
-
             const originalButtonText = suggestBtn.innerHTML;
             suggestBtn.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span>N8N Processing...</span>`;
+                <span>Processing...</span>`;
             suggestBtn.disabled = true;
 
             const payload = { keywords: userQuery };
-
             try {
                 const response = await fetchWithExponentialBackoff(N8N_REWRITE_URL, {
                     method: 'POST',
@@ -953,41 +935,30 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) {
-                    throw new Error(`AI Rewrite Webhook error: HTTP status ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-                // IMPORTANT: This relies on N8N Node 4 sending back JSON like {"rewritten_text": "..."}
                 let result;
                 try {
                     result = await response.json();
                 } catch (e) {
-                      // Catch the 'Failed to execute 'text' or 'json' error specifically.
-                    throw new Error("Invalid response body from N8N. Ensure your 'Respond to Webhook' node is returning valid JSON, not an empty body.");
+                     // ignore json error, try text
                 }
-
 
                 if (result && result.rewritten_text) {
                     workDoneTextarea.value = result.rewritten_text.trim();
-                    showMessage("AI Rewrite successful. Check log entry.", false);
+                    showMessage("AI Rewrite successful.", false);
                 } else {
-                    // Fallback to text if JSON structure is unexpected (though N8N should be fixed now)
-                    const textResult = await response.text();
-                    if (textResult) {
-                        workDoneTextarea.value = textResult.trim();
-                        showMessage("AI Rewrite successful, but JSON format was unexpected.", false);
-                    } else {
-                          throw new Error("Invalid/Empty response from AI Rewrite N8N. Ensure your final node returns JSON with key 'rewritten_text'.");
-                    }
+                     const textResult = await response.text();
+                     if (textResult) {
+                         workDoneTextarea.value = textResult.trim();
+                         showMessage("AI Rewrite successful.", false);
+                     } else {
+                         throw new Error("Empty response");
+                     }
                 }
-
             } catch (error) {
-                let errorMessage = `AI Rewrite communication failure. Error: ${error.message}`;
-                if (error.message.includes("Failed to fetch")) {
-                    errorMessage = "AI Rewrite Failed (Network Error). **CRITICAL: Check N8N for CORS Policy Block** and ensure your 'Respond to Webhook' node is configured correctly.";
-                }
-                console.error('Error calling AI Rewrite Webhook:', error);
-                showMessage(errorMessage, true);
+                console.error('AI Rewrite Error:', error);
+                showMessage("AI Rewrite Failed.", true);
             } finally {
                 suggestBtn.innerHTML = originalButtonText;
                 suggestBtn.disabled = false;
@@ -995,7 +966,6 @@
             }
         });
 
-        // --- Fetch with Exponential Backoff (Unchanged) ---
         async function fetchWithExponentialBackoff(url, options, retries = 4, delay = 1000) {
             try {
                 return await fetch(url, options);
@@ -1011,5 +981,4 @@
     });
 </script>
 </body>
-
 </html>

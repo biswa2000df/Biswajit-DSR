@@ -146,6 +146,7 @@
             /* Apply the whole-box pulsating shadow */
             animation: gemini-pulse-shadow 4s infinite ease-in-out;
             transform: translateZ(0);
+            cursor: pointer;
         }
 
         .gemini-btn::before {
@@ -431,6 +432,14 @@
             <div class="premium-underline"></div>
         </div>
         <p class="premium-subtitle">Daily Progress Report</p>
+
+        <!-- NEW: Manual Trigger Button for N8N Engine -->
+        <div class="mt-5">
+            <button type="button" id="manual-trigger-btn" class="gemini-btn text-xs font-bold py-2 px-6 rounded-full inline-flex items-center justify-center space-x-2 uppercase tracking-widest hover:scale-105 transition-transform duration-300">
+                <span class="text-xl">⚙️</span>
+                <span>Start N8N Engine</span>
+            </button>
+        </div>
     </div>
 
     <!-- Form Section -->
@@ -574,6 +583,7 @@
        const N8N_SUBMIT_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/submitButton";
        const N8N_DATE_FILL_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/dateFill";
        const N8N_EDIT_WORK_DONE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/editWorkDone";
+       const N8N_MANUAL_TRIGGER_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/manualTrigger";
 
 
         // --- Element References ---
@@ -586,6 +596,7 @@
 
         const workDoneTextarea = document.getElementById('work_done');
         const suggestBtn = document.getElementById('gemini-suggest-btn');
+        const manualTriggerBtn = document.getElementById('manual-trigger-btn');
 
         const siNoInput = document.getElementById('si_no');
         const dateInput = document.getElementById('date');
@@ -730,10 +741,26 @@
         function calculateEndTime(startTime24h) {
             if (!startTime24h) return '';
             const [startHour, startMinute] = startTime24h.split(':').map(Number);
+            // UPDATED: Shift is now 9 hours and 5 minutes
             const shiftHours = 9;
-            let endHour = startHour + shiftHours;
-            let endMinute = startMinute;
-            if (endHour >= 24) endHour %= 24;
+            const shiftMinutes = 5;
+
+            let endMinute = startMinute + shiftMinutes;
+            let carryHour = 0;
+
+            // Handle minute overflow
+            if (endMinute >= 60) {
+                endMinute -= 60;
+                carryHour = 1;
+            }
+
+            let endHour = startHour + shiftHours + carryHour;
+
+            // Handle wrap-around midnight
+            if (endHour >= 24) {
+                endHour %= 24;
+            }
+
             const formattedEndHour = String(endHour).padStart(2, '0');
             const formattedEndMinute = String(endMinute).padStart(2, '0');
             return `${formattedEndHour}:${formattedEndMinute}`;
@@ -856,12 +883,65 @@
             }, 5000);
         }
 
+        // --- N8N Manual Trigger Logic ---
+        manualTriggerBtn.addEventListener('click', async () => {
+            const originalContent = manualTriggerBtn.innerHTML;
+            manualTriggerBtn.innerHTML = `
+                <svg class="animate-spin h-4 w-4 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Starting...</span>
+            `;
+            manualTriggerBtn.disabled = true;
+
+            try {
+                // Fire and forget (or minimal wait) as requested by "immediate get simple message"
+                await fetchWithExponentialBackoff(N8N_MANUAL_TRIGGER_URL, {
+                    method: 'GET',
+                    headers: { 'ngrok-skip-browser-warning': 'true' }
+                });
+                showMessage("Started N8N Engine!", false);
+            } catch (error) {
+                console.error("Manual Trigger Error:", error);
+                // Assume success for UX if it's just a trigger, or show generic message
+                showMessage("Trigger signal sent.", false);
+            } finally {
+                manualTriggerBtn.innerHTML = originalContent;
+                manualTriggerBtn.disabled = false;
+            }
+        });
+
         logForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (submitBtn.disabled) {
                 showMessage("All mandatory fields must be completed.", true);
                 return;
             }
+
+            // --- VALIDATION: Hour and Minute Digit Check ---
+            const startParts = inTimeInput.value.split(':').map(Number);
+            const endParts = outTimeInput.value.split(':').map(Number);
+
+            if (startParts.length === 2 && endParts.length === 2) {
+                const [sH, sM] = startParts;
+                const [eH, eM] = endParts;
+
+                // Convert to 12-hour format for comparison (1-12)
+                const sH12 = sH % 12 || 12;
+                const eH12 = eH % 12 || 12;
+
+                if (sH12 === eH12) {
+                    showMessage("Validation Error: Start and End Hour digits cannot be the same (e.g. 11 AM and 11 PM).", true);
+                    return;
+                }
+
+                if (sM === eM) {
+                    showMessage("Validation Error: Start and End Minutes cannot be exactly the same.", true);
+                    return;
+                }
+            }
+
             const formattedInTime = formatTimeForN8N(inTimeInput.value);
             const formattedOutTime = formatTimeForN8N(outTimeInput.value);
             const originalButtonText = submitBtn.innerHTML;

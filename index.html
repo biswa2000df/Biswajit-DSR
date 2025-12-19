@@ -627,6 +627,16 @@
                         console.log("Fetched filled dates:", filledDays);
                         if (instance) instance.redraw();
                     }
+                } else if (response.status === 500) {
+                    // Specific Error Handling for 500
+                    try {
+                        const errorData = await response.json();
+                        if (errorData.status === "error" && errorData.message) {
+                            showMessage(errorData.message, true);
+                        }
+                    } catch (e) {
+                        console.error("Error parsing 500 error response:", e);
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching filled dates:", error);
@@ -686,6 +696,18 @@
                         updateDurationDisplay();
                         checkFormValidity();
                     }
+                } else if (response.status === 500) {
+                     // Specific Error Handling for 500
+                     try {
+                         const errorData = await response.json();
+                         if (errorData.status === "error" && errorData.message) {
+                             showMessage(errorData.message, true);
+                             return; // Stop further processing
+                         }
+                     } catch(e) { /* Fallback to default error below if parsing fails */ }
+                     showMessage("Failed to fetch data.", true);
+                } else {
+                    showMessage("Failed to fetch data.", true);
                 }
             } catch (error) {
                 console.error("Error:", error);
@@ -972,18 +994,50 @@
                     body: JSON.stringify(submissionPayload)
                 });
 
+                // Attempt to parse response body as JSON, fallback to text/null
+                let responseData = null;
+                const responseText = await response.text();
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) { /* ignore */ }
+
                 if (response.ok) {
-                    showMessage("Report Finalized Successfully!", false);
+                    // SUCCESS HANDLING
+                    let successMsg = "Report Finalized Successfully!";
+                    if (responseData && responseData.Message) {
+                        successMsg = responseData.Message;
+                    }
+
+                    showMessage(successMsg, false);
                     logForm.reset();
                     initializeDateTime();
                     checkFormValidity();
                 } else {
-                    const errorText = await response.text();
-                    throw new Error(`N8N Webhook failure: ${errorText.substring(0, 50)}...`);
+                    // ERROR HANDLING
+                    let errorMsg = "Finalization Failed.";
+
+                    if (responseData) {
+                        // Check for structured error { status: "error", message: "..." }
+                        if (responseData.status === "error" && responseData.message) {
+                            errorMsg = responseData.message;
+                        }
+                        // Check for common error formats
+                        else if (responseData.Message) {
+                             errorMsg = responseData.Message;
+                        } else if (responseData.message) {
+                             errorMsg = responseData.message;
+                        }
+                    } else if (responseText) {
+                        // Use raw text if no JSON, truncated
+                        errorMsg = responseText.substring(0, 100);
+                    }
+
+                    throw new Error(errorMsg);
                 }
             } catch (error) {
                 console.error('Submission Error:', error);
-                showMessage("Finalization Failed. Check Console.", true);
+                // Display the specific API error message
+                showMessage(error.message, true);
             } finally {
                 submitBtn.innerHTML = originalButtonText;
                 if (!response?.ok) {

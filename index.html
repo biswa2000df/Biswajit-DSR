@@ -2,1063 +2,945 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biswajit Sahoo - Daily Progress Report</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Biswajit Sahoo | Workspace</title>
 
-    <!-- Flatpickr CSS (Dark Theme for Space Vibe) -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts: Inter for UI, JetBrains Mono for Data -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.min.css">
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.05)',
+                            200: 'rgba(255, 255, 255, 0.1)',
+                            300: 'rgba(255, 255, 255, 0.2)',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                        },
+                        accent: {
+                            cyan: '#00f0ff',
+                            purple: '#7000ff',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        scanline: {
+                            '0%': { backgroundPosition: '0% 0%' },
+                            '100%': { backgroundPosition: '0% 100%' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    },
+                    screens: {
+                        'xs': '375px',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* Base Styles */
+        /* --- CORE AESTHETICS --- */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050515; /* Deeper space black */
-            color: #e0e0e0;
-            cursor: default;
+            background-color: #030712;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Animated Starfield Canvas */
-        #starfield {
+        /* Ambient Background blobs */
+        .ambient-light {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
-            /* Subtle blue/purple overlay to simulate nebula light */
-            background: radial-gradient(circle at 50% 50%, rgba(10, 10, 50, 0.4) 0%, rgba(5, 5, 20, 1) 100%);
+            background:
+                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.15), transparent 25%);
+            pointer-events: none;
         }
 
-        /* Glass Container - Enhanced Glassmorphism */
-        .glass-container {
-            background: rgba(18, 18, 50, 0.6); /* Slightly more transparent */
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(150, 150, 255, 0.08);
+        /* High-End Glass Panel */
+        .pro-card {
+            background: rgba(10, 10, 15, 0.75);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 50px 100px -20px rgba(0, 0, 0, 0.7),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
             position: relative;
-            animation: fadeIn 1.5s ease-out forwards;
-            /* Deep ambient shadow */
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
         }
 
-        /* Glowing Border Effect (Aurora) */
-        .glass-container::before {
-            content: '';
+        /* Noise Texture */
+        .pro-card::before {
+            content: "";
             position: absolute;
-            top: -1px; left: -1px; right: -1px; bottom: -1px;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.4), rgba(168, 85, 247, 0.4), rgba(56, 189, 248, 0.4));
-            z-index: -1;
-            filter: blur(20px);
-            border-radius: 1.6rem;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
             opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* Input Field Styling - Premium Feel */
-        .form-input {
-            background-color: rgba(5, 5, 20, 0.6);
-            border: 1px solid rgba(100, 100, 255, 0.15);
-            color: #ffffff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-            font-weight: 500;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #38bdf8;
-            background-color: rgba(10, 10, 30, 0.8);
-            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1), 0 0 15px rgba(56, 189, 248, 0.2);
-            transform: translateY(-1px);
-        }
-
-        .form-input:hover {
-            border-color: rgba(168, 85, 247, 0.4);
-        }
-
-        /* Customizing native date/time icons */
-        input[type="date"]::-webkit-calendar-picker-indicator,
-        input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: invert(1) opacity(0.8);
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        input[type="date"]::-webkit-calendar-picker-indicator:hover,
-        input[type="time"]::-webkit-calendar-picker-indicator:hover {
-            transform: scale(1.1);
-            filter: invert(1) opacity(1) drop-shadow(0 0 2px #38bdf8);
-        }
-
-        /* Submit Button - Pulsating Energy */
-        .submit-btn {
-            background: linear-gradient(90deg, #4f46e5, #a855f7);
-            box-shadow: 0 4px 15px rgba(129, 72, 227, 0.4);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-            transform: translateZ(0);
-        }
-        
-        /* Shimmer effect on button */
-        .submit-btn::after {
+        /* Top Line Gradient */
+        .pro-card::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .submit-btn:not(:disabled):hover::after {
-            left: 100%;
-            transition: 0.5s ease-in-out;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.5), rgba(139, 92, 246, 0.5), transparent);
         }
 
-        .submit-btn:disabled {
-            background: #334155;
-            box-shadow: none;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .submit-btn:not(:disabled):hover {
-            background: linear-gradient(90deg, #38bdf8, #a855f7);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
-        }
-
-        /* ----------------------------------------------------- */
-        /* AI REWRITE BUTTON DESIGN (RESTORED HOLOGRAPHIC)       */
-        /* ----------------------------------------------------- */
-        .gemini-btn {
-            background: rgba(10, 10, 30, 0.8); /* Darker internal fill */
-            border: 2px solid transparent;
-            color: #ffffff;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            z-index: 10;
-            /* Apply the whole-box pulsating shadow */
-            animation: gemini-pulse-shadow 4s infinite ease-in-out;
-            transform: translateZ(0);
-            cursor: pointer;
-        }
-
-        .gemini-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 9999px; /* Tailwind 'rounded-full' */
-            padding: 2px; /* Border width */
-            /* Holographic Border Effect - Cyan to Purple */
-            background: linear-gradient(45deg, #38bdf8, #a855f7, #38bdf8) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            z-index: -1;
-            transition: all 0.5s ease;
-        }
-
-        .gemini-btn:hover::before {
-            background: linear-gradient(45deg, #a855f7, #38bdf8, #a855f7) border-box; /* Reverse gradient on hover */
-            filter: blur(2px); /* Subtle glow effect on border */
-        }
-
-        /* Glowing Logo inside the AI Rewrite button */
-        .gemini-logo {
-            animation: logo-pulse 2s infinite ease-in-out;
-        }
-        
-        /* ----------------------------------------------------- */
-        /* NEW: STARLIGHT HOLOGRAM TITLE (True Premium)          */
-        /* ----------------------------------------------------- */
-        .premium-header-container {
-            position: relative;
-            display: inline-block;
-            padding-bottom: 10px;
-        }
-
-        .premium-text-effect {
-            font-family: 'Inter', sans-serif;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            /* Base Color fallback */
+        /* --- INPUT FIELDS --- */
+        .pro-input {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            position: relative;
-            z-index: 1;
-            
-            /* The Magic Gradient */
-            background: linear-gradient(
-                to right, 
-                #cbd5e1 20%, 
-                #fff 40%, 
-                #38bdf8 60%, 
-                #cbd5e1 80%
-            );
-            background-size: 200% auto;
-            
-            /* Clip to text */
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            
-            /* Animation */
-            animation: shine-text 5s linear infinite;
-            
-            /* Glow filter */
-            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
-        @keyframes shine-text {
-            to {
-                background-position: 200% center;
+        /* STRICTLY HIDE NATIVE CALENDAR ICONS */
+        .pro-input::-webkit-calendar-picker-indicator {
+            display: none !important;
+            opacity: 0 !important;
+            background: none !important;
+            width: 0 !important;
+        }
+
+        @media (min-width: 768px) {
+            .pro-input {
+                font-size: 0.95rem;
             }
         }
 
-        /* Decorative Underline */
-        .premium-underline {
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, #a855f7, #38bdf8, transparent);
-            margin: 5px auto 0;
-            border-radius: 100%;
-            opacity: 0.8;
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        .pro-input:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.6);
+            border-color: rgba(6, 182, 212, 0.8);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
         }
 
-        .premium-subtitle {
-             color: #94a3b8;
-             font-weight: 600;
-             letter-spacing: 4px;
-             text-transform: uppercase;
-             font-size: 0.85rem;
-             margin-top: 1rem;
-             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        /* Valid State (Green tint) */
+        .pro-input:not(:placeholder-shown):valid {
+            border-color: rgba(16, 185, 129, 0.4);
         }
 
-        /* ----------------------------------------------------- */
-        /* IMPROVED DURATION CIRCLE DESIGN                       */
-        /* ----------------------------------------------------- */
-        .duration-container {
+        .pro-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            background: #1e293b;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        /* --- NEW AI BUTTON DESIGN --- */
+        .btn-ai {
+            position: relative;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            color: #c4b5fd;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            white-space: nowrap;
         }
 
-        .duration-circle {
-            width: 100px; /* Slightly larger for better fit */
-            height: 100px;
-            border-radius: 50%;
-            /* Deep, premium dark gradient */
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            /* Inner shadow for depth + Outer glow */
-            box-shadow: 
-                inset 0 4px 10px rgba(0,0,0,0.5),
-                0 0 20px rgba(56, 189, 248, 0.15);
-            backdrop-filter: blur(8px);
-            z-index: 5;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+        @media (min-width: 640px) {
+            .btn-ai {
+                padding: 6px 16px;
+                gap: 8px;
+            }
         }
 
-        .duration-circle:hover {
-            transform: scale(1.05);
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 
-                inset 0 4px 10px rgba(0,0,0,0.5),
-                0 0 30px rgba(168, 85, 247, 0.3);
-        }
-        
-        /* Rotating Ring Animation */
-        .duration-circle::before {
+        .btn-ai::before {
             content: '';
             position: absolute;
-            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            top: 0; left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .btn-ai:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.8);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            text-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+        }
+
+        .btn-ai:hover::before {
+            left: 150%;
+            transition: 0.7s;
+        }
+
+        /* --- CHIPS --- */
+        .chip {
+            font-size: 0.7rem;
+            padding: 6px 12px;
+            border-radius: 4px;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        @media (min-width: 640px) {
+            .chip { font-size: 0.75rem; padding: 4px 12px; }
+        }
+        .chip:hover, .chip:active {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.6);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        /* --- DURATION WIDGET --- */
+        .widget-gauge {
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent 0%, rgba(56, 189, 248, 0.6) 25%, transparent 50%, rgba(168, 85, 247, 0.6) 75%, transparent 100%);
-            animation: spin-ring 8s linear infinite;
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(2px);
-        }
-
-        @keyframes spin-ring {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Text inside circle */
-        .duration-content {
+            background: #030712;
+            box-shadow:
+                0 0 30px rgba(0,0,0,0.8),
+                inset 0 0 20px rgba(255,255,255,0.05);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            line-height: 1;
-            text-align: center;
-        }
-
-        /* Label at bottom of circle */
-        .duration-label {
-            position: absolute;
-            bottom: 12px;
-            font-size: 0.55rem;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-        
-        /* Highlight text color */
-        .highlight-text {
-            background: linear-gradient(to right, #ffffff, #38bdf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* ----------------------------------------------------- */
-        /* TOAST NOTIFICATION STYLES */
-        /* ----------------------------------------------------- */
-        #toast-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            min-width: 250px;
-            padding: 1rem;
-            border-radius: 0.75rem; 
-            font-weight: 600;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            transform: translateX(120%); 
-            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        #toast-notification.show { transform: translateX(0); }
-        #toast-notification.success { border-left: 5px solid #10b981; }
-        #toast-notification.error { border-left: 5px solid #ef4444; }
-
-        /* ----------------------------------------------------- */
-        /* CUSTOM CALENDAR STYLES (ENHANCED HOLOGRAPHIC LOOK)    */
-        /* ----------------------------------------------------- */
-        .flatpickr-calendar {
-            background: rgba(15, 23, 42, 0.98) !important; 
-            border: 1px solid rgba(56, 189, 248, 0.2) !important;
-            border-radius: 1rem !important;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important;
-            font-family: 'Inter', sans-serif !important;
-        }
-        .flatpickr-day.already-filled-date {
-            background: repeating-linear-gradient(
-                45deg,
-                rgba(30, 41, 59, 0.4),
-                rgba(30, 41, 59, 0.4) 5px,
-                rgba(15, 23, 42, 0.4) 5px,
-                rgba(15, 23, 42, 0.4) 10px
-            ) !important;
-            color: #64748b !important;
-            border: 1px solid rgba(148, 163, 184, 0.1) !important;
             position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin: 0 auto;
+        }
+
+        .ring-active {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, #06b6d4, #8b5cf6, transparent);
+            animation: spin 3s linear infinite;
+            filter: blur(10px);
+            opacity: 0.8;
+        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* --- TOAST --- */
+        #toast-notification {
+            transform: translateY(-150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(3, 7, 18, 0.95);
+            /* Responsive Width */
+            width: 90%;
+            max-width: 380px;
+            left: 5%;
+        }
+        @media (min-width: 768px) {
+            #toast-notification {
+                width: auto;
+                left: auto;
+                right: 20px;
+            }
+        }
+        #toast-notification.show { transform: translateY(0); }
+
+        /* --- HOLOGRAPHIC CALENDAR V3 (Responsive) --- */
+        .flatpickr-calendar {
+            background: rgba(3, 7, 18, 0.95) !important;
+            backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(6, 182, 212, 0.5) !important;
+            box-shadow:
+                0 0 40px rgba(6, 182, 212, 0.15),
+                inset 0 0 20px rgba(6, 182, 212, 0.05) !important;
+            border-radius: 4px !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            padding: 10px !important;
+            /* Adaptive Width */
+            width: 100% !important;
+            max-width: 340px !important;
+
+            /* Scanline Background Effect */
+            background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)) !important;
+            background-size: 100% 2px, 3px 100% !important;
+        }
+
+        .flatpickr-days {
+            width: 100% !important;
+        }
+
+        .dayContainer {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            justify-content: space-around;
+        }
+
+        .flatpickr-prev-month, .flatpickr-next-month {
+            fill: #06b6d4 !important;
+            transition: all 0.2s;
+        }
+
+        .flatpickr-current-month {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #06b6d4 !important;
+            font-weight: 800 !important;
+            padding-top: 5px;
+        }
+
+        .flatpickr-weekdays {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3) !important;
+            margin-bottom: 10px !important;
+        }
+
+        .flatpickr-day {
+            border-radius: 2px !important;
+            border: 1px solid rgba(255,255,255,0.05) !important;
+            color: #cbd5e1 !important;
+            transition: all 0.1s !important;
+            margin: 1px !important;
+            /* Flexible height/width for mobile */
+            height: 38px !important;
+            line-height: 38px !important;
+            flex-basis: 14% !important;
+            max-width: 14% !important;
+        }
+
+        .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .flatpickr-day:hover {
+            background: rgba(6, 182, 212, 0.2) !important;
+            border-color: rgba(6, 182, 212, 0.8) !important;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.4) !important;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .flatpickr-day.selected {
+            background: #06b6d4 !important;
+            border: 1px solid #fff !important;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.8) !important;
+            color: #000 !important;
+            font-weight: 900 !important;
+            animation: pulse-select 1.5s infinite;
+        }
+
+        @keyframes pulse-select {
+            0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+
+        .flatpickr-day.flatpickr-disabled {
+            opacity: 0.1 !important;
+            cursor: not-allowed !important;
+            border: none !important;
+        }
+
+        .flatpickr-day.already-filled-date {
+            background: rgba(16, 185, 129, 0.15) !important;
+            border: 1px solid rgba(16, 185, 129, 0.5) !important;
+            color: #34d399 !important;
+            box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.2);
         }
         .flatpickr-day.already-filled-date::after {
             content: '✓';
             position: absolute;
-            top: 2px; right: 4px;
-            font-size: 10px;
-            color: #10b981;
+            top: 2px; right: 2px;
+            font-size: 8px;
+            color: #34d399;
         }
-        .flatpickr-day.selected {
-            background: linear-gradient(135deg, #38bdf8, #2563eb) !important;
-            border: none !important;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5) !important;
+
+        /* Confetti Container */
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 100;
         }
-        
-        /* Helper animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes logo-pulse {
-            0%, 100% { filter: drop-shadow(0 0 2px rgba(56,189,248,0.8)); opacity: 1; }
-            50% { filter: drop-shadow(0 0 8px rgba(168,85,247,0.8)); opacity: 0.8; }
-        }
-        
-        /* Restored Gemini Pulse Shadow Animation */
-        @keyframes gemini-pulse-shadow {
-            0%, 100% {
-                box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), 0 0 5px rgba(56, 189, 248, 0.8);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(56, 189, 248, 1), 0 0 10px rgba(168, 85, 247, 0.5);
-            }
-        }
+
+        textarea::-webkit-scrollbar { width: 4px; }
+        textarea::-webkit-scrollbar-thumb { background: #1e293b; }
     </style>
-    <!-- Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen p-3 md:p-6 selection:bg-cyan-500 selection:text-black">
 
-<!-- Canvas for the animated starfield background -->
-<canvas id="starfield"></canvas>
+<!-- Starfield & Ambient -->
+<canvas id="starfield" class="fixed inset-0 w-full h-full z-[-2]"></canvas>
+<div class="ambient-light"></div>
+<canvas id="confetti-canvas"></canvas>
 
-<!-- New Toast Notification Element -->
-<div id="toast-notification" class="flex items-center space-x-3" role="alert" aria-live="assertive">
-    <span id="toast-icon">🚀</span>
-    <span id="toast-message"></span>
+<!-- Toast Notification -->
+<div id="toast-notification" class="fixed top-6 z-50 flex items-center gap-4 px-4 py-4 rounded-lg shadow-2xl border-l-4 border-cyan-500">
+    <div id="toast-icon" class="text-2xl flex-shrink-0"></div>
+    <div>
+        <h4 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-1">System Message</h4>
+        <p id="toast-message" class="text-sm font-medium text-slate-200 leading-snug"></p>
+    </div>
 </div>
 
-<div class="glass-container w-full max-w-2xl p-8 md:p-12 rounded-3xl shadow-2xl">
-    <!-- Header Section (Brand New Starlight Hologram Design) -->
-    <div class="text-center mb-8">
-        <div class="premium-header-container">
-            <h1 class="text-5xl md:text-6xl premium-text-effect mb-0 tracking-tighter">
-                BISWAJIT SAHOO
+<!-- Main Card -->
+<main class="pro-card w-full max-w-3xl rounded-2xl md:rounded-3xl p-6 md:p-12 z-10 animate-[fadeIn_0.8s_ease-out] mx-auto">
+
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 border-b border-white/5 pb-6">
+        <div class="w-full md:w-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
+                <span class="h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest">Workspace v2.0 <span class="text-slate-600 mx-1">|</span> <span id="live-clock" class="text-slate-400 whitespace-nowrap">00:00:00</span></span>
+            </div>
+            <!-- Responsive Title Size -->
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tighter text-white leading-tight">
+                BISWAJIT <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">SAHOO</span>
             </h1>
-            <div class="premium-underline"></div>
+            <p class="text-sm md:text-base text-slate-400 mt-1 font-light tracking-wide">Daily Engineering Progress Log</p>
         </div>
-        <p class="premium-subtitle">Daily Progress Report</p>
 
-        <!-- NEW: Manual Trigger Button for N8N Engine -->
-        <div class="mt-5">
-            <button type="button" id="manual-trigger-btn" class="gemini-btn text-xs font-bold py-2 px-6 rounded-full inline-flex items-center justify-center space-x-2 uppercase tracking-widest hover:scale-105 transition-transform duration-300">
-                <span class="text-xl">⚙️</span>
-                <span>Start N8N Engine</span>
-            </button>
-        </div>
-    </div>
+        <button id="manual-trigger-btn" class="mt-4 md:mt-0 w-full md:w-auto group flex items-center justify-center md:justify-start gap-3 px-4 py-2 rounded-lg bg-black/40 border border-white/10 hover:border-cyan-500/50 transition-all cursor-pointer">
+            <div class="relative">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div class="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-75"></div>
+            </div>
+            <div class="flex flex-col text-left">
+                <span class="text-[10px] uppercase text-slate-500 font-bold group-hover:text-cyan-400 transition-colors">N8N Engine</span>
+                <span class="text-xs font-mono text-white">Online</span>
+            </div>
+        </button>
+    </header>
 
-    <!-- Form Section -->
-    <form id="log-form" action="#" method="POST" class="space-y-6" onsubmit="return false;">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Form -->
+    <form id="log-form" class="space-y-6 md:space-y-8" onsubmit="return false;">
+
+        <!-- Meta Data Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
             <!-- Log ID -->
-            <div>
-                <label for="si_no" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">Sequence No.<span class="text-red-500 ml-1">*</span></label>
-                <input type="number" id="si_no" name="si_no" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500" placeholder="e.g., 15" readonly>
+            <div class="md:col-span-3">
+                <label for="si_no" class="pro-label">Log Sequence</label>
+                <input type="number" id="si_no" name="si_no" class="pro-input w-full p-3 md:p-3 rounded-lg text-center font-bold text-lg text-cyan-400 focus:text-cyan-300" readonly placeholder="--">
             </div>
             <!-- Date -->
-            <div>
-                <label for="date" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">Date<span class="text-red-500 ml-1">*</span></label>
-                <input type="date" id="date" name="date" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
-            </div>
-        </div>
-
-        <!-- Daily Status Report -->
-        <div>
-            <div class="flex justify-between items-center mb-2">
-                <label for="work_done" class="block text-sm font-semibold text-cyan-300 tracking-wide">Daily Status Report<span class="text-red-500 ml-1">*</span></label>
-                <!-- AI REWRITE BUTTON -->
-                <button type="button" id="gemini-suggest-btn" class="gemini-btn text-xs font-semibold py-2 px-4 rounded-full flex items-center space-x-2 uppercase tracking-wider">
-                    <span class="text-lg gemini-logo">✨</span>
-                    <span>AI Rewrite</span>
-                </button>
-            </div>
-            <textarea id="work_done" name="work_done" rows="5" class="form-input w-full p-4 rounded-xl focus:ring-2 focus:ring-cyan-500" placeholder="Enter keywords (e.g., 'fixed UI bug on login') or a draft, then click AI Rewrite..."></textarea>
-        </div>
-
-        <!-- Time and Duration Section (Smart Layout) -->
-        <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
-            <!-- Start Time -->
-            <div class="w-full">
-                <label for="in_time" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">Start Time <span class="text-red-500 ml-1">*</span></label>
-                <input type="time" id="in_time" name="in_time" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
-            </div>
-
-            <!-- Enhanced Duration Circle (Center) -->
-            <div class="duration-container mt-6 md:mt-0">
-                <div class="duration-circle">
-                    <!-- Content injected by JS -->
-                    <div id="duration-content" class="duration-content">
-                        <span class="text-3xl font-bold highlight-text">--</span>
-                    </div>
-                    <span class="duration-label">WORKED</span>
+            <div class="md:col-span-9">
+                <label for="date" class="pro-label">Date Entry</label>
+                <div class="relative group">
+                    <!-- REMOVED SVG ICON AND ADJUSTED PADDING FOR CLEAN TEXT ONLY -->
+                    <input type="text" id="date" name="date" class="pro-input w-full p-3 md:p-3 rounded-lg cursor-pointer text-slate-300 group-hover:text-cyan-300 transition-colors" placeholder="YYYY-MM-DD" required>
                 </div>
             </div>
+        </div>
 
-            <!-- End Time -->
-            <div class="w-full">
-                <label for="out_time" class="block mb-2 text-sm font-semibold text-cyan-300 tracking-wide">End Time<span class="text-red-500 ml-1">*</span></label>
-                <input type="time" id="out_time" name="out_time" class="form-input w-full p-3 rounded-xl focus:ring-2 focus:ring-cyan-500">
+        <!-- Work Report Section -->
+        <div class="relative group">
+            <div class="flex flex-row justify-between items-center mb-2">
+                <label for="work_done" class="pro-label text-cyan-400">Activity Report</label>
+
+                <!-- AI Button -->
+                <button type="button" id="gemini-suggest-btn" class="btn-ai">
+                    <svg class="w-4 h-4 text-violet-400 animate-pulse flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span>AI Enhance</span>
+                </button>
+            </div>
+
+            <div class="relative">
+                    <textarea id="work_done" name="work_done" rows="6"
+                              class="pro-input w-full p-4 rounded-lg leading-relaxed text-slate-300 focus:text-white resize-none"
+                              placeholder="Detail your tasks, bugs fixed, or features implemented... (Tip: Press Ctrl+Enter to submit)" required></textarea>
+
+                <!-- Decorative accents -->
+                <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500 pointer-events-none opacity-50"></div>
+                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500 pointer-events-none opacity-50"></div>
+            </div>
+
+            <!-- Quick Task Chips -->
+            <div class="flex flex-wrap gap-2 mt-3 items-center">
+                <span class="text-[10px] text-slate-500 uppercase tracking-wider font-bold mr-1 hidden xs:inline">Quick Add:</span>
+                <button type="button" class="chip" onclick="addText('Daily Scrum')">Scrum</button>
+                <button type="button" class="chip" onclick="addText('Bug Fixes:')">Fixes</button>
+                <button type="button" class="chip" onclick="addText('Code Review')">Review</button>
+                <button type="button" class="chip" onclick="addText('Feature Dev:')">Feature</button>
+                <button type="button" class="chip" onclick="addText('Docs Update')">Docs</button>
+            </div>
+
+            <div class="text-right mt-1">
+                <span id="save-status" class="text-[10px] text-cyan-500/70 font-mono tracking-widest uppercase opacity-0 transition-opacity">Saved locally</span>
             </div>
         </div>
 
-        <!-- Finalize Report -->
-        <div>
-            <button type="submit" id="submit-btn" class="submit-btn w-full text-white font-bold py-4 px-4 rounded-xl text-lg uppercase tracking-widest" disabled>
-                Finalize Report
+        <!-- Timing Control Panel -->
+        <div class="bg-black/20 rounded-2xl p-4 md:p-6 border border-white/5 relative overflow-hidden">
+            <!-- Background grid for tech feel -->
+            <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-8 items-center relative z-10">
+
+                <!-- Start -->
+                <div class="order-1 md:order-none">
+                    <label for="in_time" class="pro-label">Clock In</label>
+                    <input type="time" id="in_time" name="in_time" class="pro-input w-full p-4 rounded-lg text-center text-xl font-mono tracking-widest text-cyan-300" required>
+                </div>
+
+                <!-- Gauge -->
+                <div class="flex flex-col items-center justify-center relative order-2 md:order-none my-2 md:my-0">
+                    <div class="widget-gauge group cursor-default">
+                        <div class="ring-active"></div>
+                        <div id="duration-content" class="widget-content flex flex-col items-center">
+                            <span class="text-2xl font-bold text-white font-mono">--</span>
+                        </div>
+                    </div>
+                    <span class="absolute -bottom-6 text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">Duration</span>
+                </div>
+
+                <!-- End -->
+                <div class="order-3 md:order-none">
+                    <label for="out_time" class="pro-label">Clock Out</label>
+                    <input type="time" id="out_time" name="out_time" class="pro-input w-full p-4 rounded-lg text-center text-xl font-mono tracking-widest text-violet-300" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Area -->
+        <div class="pt-2 md:pt-4">
+            <button type="submit" id="submit-btn" class="btn-primary w-full py-4 md:py-5 rounded-lg font-black text-white text-lg shadow-lg flex items-center justify-center gap-3 transition-transform active:scale-95" disabled>
+                <span>TRANSMIT REPORT</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
         </div>
+
     </form>
-</div>
+</main>
 
+<footer class="fixed bottom-4 left-4 text-[10px] text-slate-600 font-mono tracking-widest pointer-events-none hidden md:block">
+    SECURE CONNECTION ESTABLISHED • N8N PROTOCOL ACTIVE
+</footer>
 
+<!-- LOGIC SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+    // --- Quick Add Function ---
+    function addText(text) {
+        const textarea = document.getElementById('work_done');
+        if (textarea.value.length > 0) {
+            textarea.value += '\n- ' + text + ' ';
+        } else {
+            textarea.value = '- ' + text + ' ';
+        }
+        textarea.dispatchEvent(new Event('input'));
+        textarea.focus();
+    }
+
+    // --- Live Clock ---
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('live-clock').textContent = now.toLocaleTimeString('en-US', {hour12: false});
+    }, 1000);
+
     document.addEventListener('DOMContentLoaded', () => {
-        // --- Starfield Animation (Unchanged) ---
+        // --- 1. VISUAL EFFECTS ---
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
-        const numStars = 500;
         const stars = [];
-        let mouseX = 0;
-        let mouseY = 0;
-        const parallaxFactor = 0.008;
+        const numStars = window.innerWidth < 600 ? 150 : 300;
 
-        function setCanvasSize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        setCanvasSize();
-        window.addEventListener('resize', setCanvasSize);
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+        const resizeCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         class Star {
-            constructor(x, y, radius, alpha, velocity) {
-                this.x = x; this.y = y; this.radius = radius;
-                this.alpha = alpha; this.velocity = velocity;
-                this.parallaxDepth = (radius / 1.5);
-            }
-            draw(x, y) {
-                ctx.beginPath();
-                ctx.arc(x, y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                ctx.fill();
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.speed = Math.random() * 0.2 + 0.05;
+                this.alpha = Math.random();
             }
             update() {
-                this.y -= this.velocity;
-                if (this.y < -this.radius) {
-                    this.y = canvas.height + this.radius;
-                    this.x = Math.random() * canvas.width;
-                }
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const offsetX = (mouseX - centerX) * parallaxFactor;
-                const offsetY = (mouseY - centerY) * parallaxFactor;
-                const adjustedX = this.x - (this.parallaxDepth * offsetX);
-                const adjustedY = this.y - (this.parallaxDepth * offsetY);
-                this.draw(adjustedX, adjustedY);
+                this.y -= this.speed;
+                if (this.y < 0) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
+        for(let i=0; i<numStars; i++) stars.push(new Star());
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => { star.update(); star.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
 
-        function initStars() {
-            for (let i = 0; i < numStars; i++) {
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const radius = Math.random() * 1.5 + 0.5;
-                const alpha = Math.random() * 0.7 + 0.3;
-                const velocity = Math.random() * 0.5 + 0.1;
-                stars.push(new Star(x, y, radius, alpha, velocity));
+        // --- Confetti Effect ---
+        const cCanvas = document.getElementById('confetti-canvas');
+        const cCtx = cCanvas.getContext('2d');
+        let confetti = [];
+        function resizeConfetti() { cCanvas.width = window.innerWidth; cCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeConfetti);
+        resizeConfetti();
+
+        function fireConfetti() {
+            confetti = [];
+            for(let i=0; i<100; i++) {
+                confetti.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: (Math.random() - 0.5) * 20,
+                    color: `hsl(${Math.random()*360}, 100%, 50%)`,
+                    life: 100
+                });
             }
+            animateConfetti();
+        }
+        function animateConfetti() {
+            cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+            confetti.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.5; p.life--;
+                cCtx.fillStyle = p.color; cCtx.fillRect(p.x, p.y, 5, 5);
+                if(p.life <= 0) confetti.splice(i, 1);
+            });
+            if(confetti.length > 0) requestAnimationFrame(animateConfetti);
         }
 
-        function animateStars() {
-            ctx.fillStyle = 'rgba(5, 5, 20, 0.4)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(star => star.update());
-            requestAnimationFrame(animateStars);
-        }
+        // --- 2. CONFIG & VARIABLES ---
+        const N8N_REWRITE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/AI_GenerateWorkDone";
+        const N8N_SUBMIT_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/submitButton";
+        const N8N_DATE_FILL_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/dateFill";
+        const N8N_EDIT_WORK_DONE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/editWorkDone";
+        const N8N_MANUAL_TRIGGER_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/manualTrigger";
 
-        initStars();
-        animateStars();
-
-
-       // --- N8N API Integration URLs ---
-       const N8N_REWRITE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/AI_GenerateWorkDone";
-       const N8N_SUBMIT_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/submitButton";
-       const N8N_DATE_FILL_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/dateFill";
-       const N8N_EDIT_WORK_DONE_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/editWorkDone";
-       const N8N_MANUAL_TRIGGER_URL = "https://nucleoplasmic-maci-semiannually.ngrok-free.dev/webhook/manualTrigger";
-
-
-        // --- Element References ---
         const logForm = document.getElementById('log-form');
         const submitBtn = document.getElementById('submit-btn');
-        // Toast
-        const toastNotification = document.getElementById('toast-notification');
-        const toastMessage = document.getElementById('toast-message');
-        const toastIcon = document.getElementById('toast-icon');
-
         const workDoneTextarea = document.getElementById('work_done');
         const suggestBtn = document.getElementById('gemini-suggest-btn');
         const manualTriggerBtn = document.getElementById('manual-trigger-btn');
-
         const siNoInput = document.getElementById('si_no');
         const dateInput = document.getElementById('date');
         const inTimeInput = document.getElementById('in_time');
         const outTimeInput = document.getElementById('out_time');
-        
-        // Duration Content Wrapper
         const durationContent = document.getElementById('duration-content');
+        const toastEl = document.getElementById('toast-notification');
+        const saveStatusEl = document.getElementById('save-status');
 
-        // --- Custom Calendar Logic ---
-        let filledDays = []; 
+        let filledDays = [];
 
-        async function fetchFilledDates(instance) {
-            console.log("Calendar Opened: Fetching filled dates...");
-            try {
-                const response = await fetchWithExponentialBackoff(N8N_DATE_FILL_URL, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && Array.isArray(data.AlreadyFieldDate)) {
-                        filledDays = data.AlreadyFieldDate.map(d => Number(d));
-                        console.log("Fetched filled dates:", filledDays);
-                        if (instance) instance.redraw();
-                    }
-                }
-            } catch (error) {
-                console.error("Error fetching filled dates:", error);
+        // --- 3. HELPER FUNCTIONS ---
+        function showMessage(msg, isError = false) {
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-message');
+            text.textContent = msg;
+            if (isError) {
+                icon.innerHTML = '⚠️';
+                toastEl.classList.remove('border-cyan-500');
+                toastEl.classList.add('border-red-500');
+            } else {
+                icon.innerHTML = '✅';
+                toastEl.classList.add('border-cyan-500');
+                toastEl.classList.remove('border-red-500');
             }
+            toastEl.classList.add('show');
+            setTimeout(() => toastEl.classList.remove('show'), 4000);
+        }
+
+        function formatTimeForN8N(time24h) {
+            if (!time24h) return '';
+            const [hours, minutes] = time24h.split(':').map(Number);
+            let h = hours; const m = String(minutes).padStart(2, '0'); let modifier = 'AM';
+            if (h === 0) h = 12; else if (h === 12) modifier = 'PM'; else if (h > 12) { h = h - 12; modifier = 'PM'; }
+            return `${h}:${m} ${modifier}`;
         }
 
         function convert12hTo24h(timeStr) {
             if (!timeStr) return '';
             const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
             if (!match) return '';
-
-            let [_, hours, minutes, modifier] = match;
-            hours = parseInt(hours, 10);
-
-            if (hours === 12 && modifier.toUpperCase() === 'AM') {
-                hours = 0;
-            } else if (hours !== 12 && modifier.toUpperCase() === 'PM') {
-                hours += 12;
-            }
-
+            let [_, hours, minutes, modifier] = match; hours = parseInt(hours, 10);
+            if (hours === 12 && modifier.toUpperCase() === 'AM') hours = 0; else if (hours !== 12 && modifier.toUpperCase() === 'PM') hours += 12;
             return `${String(hours).padStart(2, '0')}:${minutes}`;
-        }
-
-        async function fetchWorkDoneForDate(dayNumber) {
-            showMessage("Fetching data for selected date...", false);
-            try {
-                const response = await fetchWithExponentialBackoff(N8N_EDIT_WORK_DONE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
-                    },
-                    body: JSON.stringify({ "preFieldDate": String(dayNumber) })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const record = data.PreFieldValueBasedOnDate;
-                    if (record) {
-                        if (record["SI No"]) siNoInput.value = record["SI No"];
-
-                        if (record["WorkDone"] && record["WorkDone"].trim() !== "") {
-                            workDoneTextarea.value = record["WorkDone"];
-                            if (record["InTime"]) inTimeInput.value = convert12hTo24h(record["InTime"]);
-                            if (record["OutTime"]) outTimeInput.value = convert12hTo24h(record["OutTime"]);
-                            showMessage("Data loaded for selected date.", false);
-                        } else {
-                            workDoneTextarea.value = "";
-                            const today = new Date();
-                            const hours = String(today.getHours()).padStart(2, '0');
-                            const minutes = String(today.getMinutes()).padStart(2, '0');
-                            const formattedTime = `${hours}:${minutes}`;
-
-                            inTimeInput.value = formattedTime;
-                            outTimeInput.value = calculateEndTime(formattedTime);
-                        }
-                        updateDurationDisplay();
-                        checkFormValidity();
-                    }
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                showMessage("Failed to fetch data.", true);
-            }
-        }
-
-        // Initialize Flatpickr
-        const fp = flatpickr("#date", {
-            dateFormat: "Y-m-d",
-            theme: "dark",
-            disableMobile: "true",
-            maxDate: "today", // Disable all future dates
-            onOpen: function(selectedDates, dateStr, instance) {
-                fetchFilledDates(instance);
-            },
-            onDayCreate: function(dObj, dStr, fp, dayElem) {
-                if (dayElem.classList.contains("prevMonthDay") || dayElem.classList.contains("nextMonthDay")) {
-                    dayElem.classList.add("flatpickr-disabled");
-                    dayElem.style.opacity = "0.1";
-                    dayElem.style.pointerEvents = "none";
-                    return;
-                }
-                const dayNumber = dayElem.dateObj.getDate();
-                if (filledDays.includes(dayNumber)) {
-                    dayElem.classList.add("already-filled-date");
-                }
-            },
-            onChange: function(selectedDates, dateStr, instance) {
-                dateInput.value = dateStr;
-                dateInput.dispatchEvent(new Event('input'));
-                if (selectedDates.length > 0) {
-                    const dayNumber = selectedDates[0].getDate();
-                    fetchWorkDoneForDate(dayNumber);
-                }
-            }
-        });
-
-        function formatTimeForN8N(time24h) {
-            if (!time24h) return '';
-            const [hours, minutes] = time24h.split(':').map(Number);
-            let h = hours;
-            const m = String(minutes).padStart(2, '0');
-            let modifier = 'AM';
-            if (h === 0) h = 12;
-            else if (h === 12) modifier = 'PM';
-            else if (h > 12) {
-                h = h - 12;
-                modifier = 'PM';
-            }
-            return `${h}:${m} ${modifier}`;
         }
 
         function calculateEndTime(startTime24h) {
             if (!startTime24h) return '';
             const [startHour, startMinute] = startTime24h.split(':').map(Number);
-            // UPDATED: Shift is now 9 hours and 5 minutes
-            const shiftHours = 9;
-            const shiftMinutes = 5;
-
-            let endMinute = startMinute + shiftMinutes;
-            let carryHour = 0;
-            
-            // Handle minute overflow
-            if (endMinute >= 60) {
-                endMinute -= 60;
-                carryHour = 1;
-            }
-
+            const shiftHours = 9; const shiftMinutes = 5;
+            let endMinute = startMinute + shiftMinutes; let carryHour = 0;
+            if (endMinute >= 60) { endMinute -= 60; carryHour = 1; }
             let endHour = startHour + shiftHours + carryHour;
-            
-            // Handle wrap-around midnight
-            if (endHour >= 24) {
-                endHour %= 24;
-            }
-
-            const formattedEndHour = String(endHour).padStart(2, '0');
-            const formattedEndMinute = String(endMinute).padStart(2, '0');
-            return `${formattedEndHour}:${formattedEndMinute}`;
+            if (endHour >= 24) endHour %= 24;
+            return `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
         }
 
-        // --- IMPROVED: Smart Duration Display ---
+        async function fetchWithExponentialBackoff(url, options, retries = 4, delay = 1000) {
+            try { return await fetch(url, options); }
+            catch (error) {
+                if (retries > 0) { await new Promise(resolve => setTimeout(resolve, delay)); return fetchWithExponentialBackoff(url, options, retries - 1, delay * 2); }
+                else { throw error; }
+            }
+        }
+
+        // --- 4. CORE LOGIC ---
+        workDoneTextarea.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                if (!submitBtn.disabled) { logForm.dispatchEvent(new Event('submit')); }
+                else { showMessage("Please fill all fields first", true); }
+            }
+        });
+
+        function saveToLocal() {
+            localStorage.setItem('dailyLog_draft', workDoneTextarea.value);
+            saveStatusEl.style.opacity = '1';
+            setTimeout(() => saveStatusEl.style.opacity = '0', 2000);
+        }
+        const savedDraft = localStorage.getItem('dailyLog_draft');
+        if(savedDraft && !workDoneTextarea.value) { workDoneTextarea.value = savedDraft; }
+        workDoneTextarea.addEventListener('input', () => { saveToLocal(); checkFormValidity(); });
+
+        async function fetchFilledDates(instance) {
+            try {
+                const response = await fetchWithExponentialBackoff(N8N_DATE_FILL_URL, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && Array.isArray(data.AlreadyFieldDate)) {
+                        filledDays = data.AlreadyFieldDate.map(d => Number(d));
+                        if (instance) instance.redraw();
+                    }
+                }
+            } catch (error) { console.error("Date fetch error", error); }
+        }
+        fetchFilledDates(null);
+
+        async function fetchWorkDoneForDate(dayNumber) {
+            showMessage("Syncing database...");
+            try {
+                const response = await fetchWithExponentialBackoff(N8N_EDIT_WORK_DONE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+                    body: JSON.stringify({ "preFieldDate": String(dayNumber) })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    const record = data.PreFieldValueBasedOnDate;
+                    if (record) {
+                        if (record["SI No"]) siNoInput.value = record["SI No"];
+                        if (record["WorkDone"] && record["WorkDone"].trim() !== "") {
+                            workDoneTextarea.value = record["WorkDone"];
+                            if (record["InTime"]) inTimeInput.value = convert12hTo24h(record["InTime"]);
+                            if (record["OutTime"]) outTimeInput.value = convert12hTo24h(record["OutTime"]);
+                            showMessage("Entry loaded.");
+                        } else {
+                            workDoneTextarea.value = "";
+                            setDefaultTimes();
+                        }
+                        updateDurationDisplay(); checkFormValidity();
+                    }
+                }
+            } catch (error) { showMessage("Sync failed.", true); }
+        }
+
+        // --- FLATPICKR CONFIG ---
+        const fp = flatpickr("#date", {
+            dateFormat: "Y-m-d",
+            theme: "dark",
+            disableMobile: true, // STRICTLY TRUE (Boolean)
+            maxDate: "today",
+            onOpen: (selectedDates, dateStr, instance) => {
+                fetchFilledDates(instance);
+            },
+            onDayCreate: (dObj, dStr, fp, dayElem) => {
+                if (dayElem.classList.contains("prevMonthDay") || dayElem.classList.contains("nextMonthDay")) return;
+                const dayNumber = dayElem.dateObj.getDate();
+                if (filledDays.includes(dayNumber)) {
+                    dayElem.classList.add("already-filled-date");
+                }
+            },
+            onChange: (selectedDates, dateStr, instance) => {
+                dateInput.value = dateStr;
+                dateInput.dispatchEvent(new Event('input'));
+                if (selectedDates.length > 0) fetchWorkDoneForDate(selectedDates[0].getDate());
+            }
+        });
+
         function updateDurationDisplay() {
-            const startVal = inTimeInput.value;
-            const endVal = outTimeInput.value;
-
-            if (!startVal || !endVal) {
-                durationContent.innerHTML = `<span class="text-3xl font-bold highlight-text">--</span>`;
-                return;
-            }
-
-            const [startH, startM] = startVal.split(':').map(Number);
-            const [endH, endM] = endVal.split(':').map(Number);
-
-            let startTotalMins = (startH * 60) + startM;
-            let endTotalMins = (endH * 60) + endM;
-
-            // Handle next day overlap
-            if (endTotalMins < startTotalMins) {
-                endTotalMins += (24 * 60); 
-            }
-
+            const startVal = inTimeInput.value; const endVal = outTimeInput.value;
+            if (!startVal || !endVal) { durationContent.innerHTML = `<span class="text-2xl font-bold text-slate-500">--</span>`; return; }
+            const [startH, startM] = startVal.split(':').map(Number); const [endH, endM] = endVal.split(':').map(Number);
+            let startTotalMins = (startH * 60) + startM; let endTotalMins = (endH * 60) + endM;
+            if (endTotalMins < startTotalMins) endTotalMins += (24 * 60);
             const diffMins = endTotalMins - startTotalMins;
-            const hours = Math.floor(diffMins / 60);
-            const minutes = diffMins % 60;
-
-            // LOGIC: If minutes > 0, stack vertically. If minutes == 0, show big number.
+            const hours = Math.floor(diffMins / 60); const minutes = diffMins % 60;
             if (minutes === 0) {
-                // Single Line: Large Number
-                durationContent.innerHTML = `
-                    <span class="text-4xl font-black highlight-text leading-none">${hours}<span class="text-xl font-medium text-cyan-300 ml-0.5">h</span></span>
-                `;
+                durationContent.innerHTML = `<span class="text-4xl font-black text-white leading-none tracking-tighter">${hours}<span class="text-lg text-cyan-400 align-top">h</span></span>`;
             } else {
-                // Two Lines: Stacked
-                durationContent.innerHTML = `
-                    <div class="flex flex-col items-center justify-center -space-y-1 mt-1">
-                        <span class="text-3xl font-bold highlight-text leading-none">${hours}<span class="text-sm font-normal text-cyan-300 ml-0.5">h</span></span>
-                        <span class="text-xl font-bold text-cyan-100 leading-none">${minutes}<span class="text-xs font-normal text-cyan-400 ml-0.5">m</span></span>
-                    </div>
-                `;
+                durationContent.innerHTML = `<div class="flex flex-col leading-none"><span class="text-3xl font-bold text-white tracking-tighter">${hours}<span class="text-sm text-cyan-400">h</span></span><span class="text-xl font-medium text-violet-400 tracking-tighter">${minutes}<span class="text-xs">m</span></span></div>`;
             }
         }
 
-        function updateLogIdBasedOnDate(dateString) {
-            if (dateString) {
-                const dayOfMonth = new Date(dateString + 'T00:00:00').getDate();
-                siNoInput.value = dayOfMonth;
-            } else {
-                siNoInput.value = '';
-            }
-            checkFormValidity();
+        function setDefaultTimes() {
+            const today = new Date();
+            const h = String(today.getHours()).padStart(2, '0'); const m = String(today.getMinutes()).padStart(2, '0');
+            const time = `${h}:${m}`; inTimeInput.value = time; outTimeInput.value = calculateEndTime(time);
         }
 
         function initializeDateTime() {
             const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            const hours = String(today.getHours()).padStart(2, '0');
-            const minutes = String(today.getMinutes()).padStart(2, '0');
-            const formattedTime = `${hours}:${minutes}`;
-
-            fp.setDate(formattedDate);
-            updateLogIdBasedOnDate(formattedDate);
-            inTimeInput.value = formattedTime;
-            outTimeInput.value = calculateEndTime(formattedTime);
-            updateDurationDisplay(); 
+            const y = today.getFullYear(); const m = String(today.getMonth() + 1).padStart(2, '0'); const d = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${y}-${m}-${d}`;
+            fp.setDate(dateStr); siNoInput.value = d; setDefaultTimes(); updateDurationDisplay();
         }
 
         function checkFormValidity() {
-            const isSiNoValid = siNoInput.value.trim() !== '';
-            const isDateValid = dateInput.value.trim() !== '';
-            const isWorkDoneValid = workDoneTextarea.value.trim() !== '';
-            const isInTimeValid = inTimeInput.value.trim() !== '';
-            const isOutTimeValid = outTimeInput.value.trim() !== '';
-            submitBtn.disabled = !(isSiNoValid && isDateValid && isWorkDoneValid && isInTimeValid && isOutTimeValid);
+            const isValid = siNoInput.value.trim() !== '' && dateInput.value.trim() !== '' && workDoneTextarea.value.trim() !== '' && inTimeInput.value.trim() !== '' && outTimeInput.value.trim() !== '';
+            submitBtn.disabled = !isValid;
+            if(isValid) { submitBtn.classList.add('brightness-110'); } else { submitBtn.classList.remove('brightness-110'); }
         }
 
-        initializeDateTime();
-        checkFormValidity();
-
-        [dateInput, workDoneTextarea, inTimeInput, outTimeInput].forEach(input => {
-            input.addEventListener('input', checkFormValidity);
+        // --- EVENT LISTENERS ---
+        [dateInput, inTimeInput, outTimeInput].forEach(el => {
+            el.addEventListener('input', () => {
+                if (el === inTimeInput) { outTimeInput.value = calculateEndTime(el.value); }
+                if (el === dateInput && el.value) { siNoInput.value = new Date(el.value).getDate(); }
+                updateDurationDisplay(); checkFormValidity();
+            });
         });
 
-        dateInput.addEventListener('input', (e) => {
-            updateLogIdBasedOnDate(e.target.value);
-        });
-
-        inTimeInput.addEventListener('input', (e) => {
-            const newStartTime = e.target.value;
-            outTimeInput.value = calculateEndTime(newStartTime);
-            updateDurationDisplay();
-            checkFormValidity();
-        });
-
-        outTimeInput.addEventListener('input', () => {
-             updateDurationDisplay();
-             checkFormValidity();
-        });
-
-        function showMessage(message, isError = false) {
-            toastNotification.classList.remove('show', 'success', 'error');
-            toastMessage.textContent = message;
-            if (isError) {
-                toastNotification.classList.add('error');
-                toastIcon.textContent = '🚨';
-            } else {
-                toastNotification.classList.add('success');
-                toastIcon.textContent = '✅';
-            }
-            toastNotification.classList.add('show');
-            setTimeout(() => {
-                toastNotification.classList.remove('show');
-            }, 5000);
-        }
-
-        // --- N8N Manual Trigger Logic ---
         manualTriggerBtn.addEventListener('click', async () => {
-            const originalContent = manualTriggerBtn.innerHTML;
-            manualTriggerBtn.innerHTML = `
-                <svg class="animate-spin h-4 w-4 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>Starting...</span>
-            `;
-            manualTriggerBtn.disabled = true;
+            const statusSpan = manualTriggerBtn.querySelector('span:last-child');
+            const originalText = statusSpan.textContent;
+            statusSpan.textContent = "PINGING...";
+            manualTriggerBtn.classList.add('animate-pulse');
+            try {
+                await fetchWithExponentialBackoff(N8N_MANUAL_TRIGGER_URL, { method: 'GET', headers: { 'ngrok-skip-browser-warning': 'true' } });
+                showMessage("Engine Triggered");
+            } catch (error) { showMessage("Signal sent (blind)", false); }
+            finally { setTimeout(() => { statusSpan.textContent = originalText; manualTriggerBtn.classList.remove('animate-pulse'); }, 1000); }
+        });
+
+        suggestBtn.addEventListener('click', async () => {
+            const query = workDoneTextarea.value.trim();
+            if (!query) return showMessage("Type a rough draft first.", true);
+
+            const originalHTML = suggestBtn.innerHTML;
+            suggestBtn.innerHTML = `<svg class="animate-spin h-3 w-3 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>PROCESSING</span>`;
+            suggestBtn.disabled = true;
 
             try {
-                // Fire and forget (or minimal wait) as requested by "immediate get simple message"
-                await fetchWithExponentialBackoff(N8N_MANUAL_TRIGGER_URL, {
-                    method: 'GET',
-                    headers: { 'ngrok-skip-browser-warning': 'true' }
-                });
-                showMessage("Started N8N Engine!", false);
-            } catch (error) {
-                console.error("Manual Trigger Error:", error);
-                // Assume success for UX if it's just a trigger, or show generic message
-                showMessage("Trigger signal sent.", false); 
-            } finally {
-                manualTriggerBtn.innerHTML = originalContent;
-                manualTriggerBtn.disabled = false;
-            }
+                const response = await fetchWithExponentialBackoff(N8N_REWRITE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keywords: query }) });
+                let resultText = "";
+                try { const json = await response.json(); resultText = json.rewritten_text || await response.text(); } catch(e) { resultText = await response.text(); }
+                if (resultText) { workDoneTextarea.value = resultText.trim(); saveToLocal(); showMessage("Content polished."); }
+            } catch (error) { showMessage("AI Service Unavailable", true); }
+            finally { suggestBtn.innerHTML = originalHTML; suggestBtn.disabled = false; checkFormValidity(); }
         });
 
         logForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            if (submitBtn.disabled) {
-                showMessage("All mandatory fields must be completed.", true);
-                return;
-            }
+            e.preventDefault();
+            if (submitBtn.disabled) return;
+            const [sH, sM] = inTimeInput.value.split(':').map(Number); const [eH, eM] = outTimeInput.value.split(':').map(Number);
+            if ((sH % 12 || 12) === (eH % 12 || 12) && Math.abs(sH - eH) !== 0) { return showMessage("Check AM/PM logic.", true); }
+            if (sM === eM && sH === eH) { return showMessage("Start and end time cannot be identical.", true); }
 
-            // --- VALIDATION: Hour and Minute Digit Check ---
-            const startParts = inTimeInput.value.split(':').map(Number);
-            const endParts = outTimeInput.value.split(':').map(Number);
-            
-            if (startParts.length === 2 && endParts.length === 2) {
-                const [sH, sM] = startParts;
-                const [eH, eM] = endParts;
-
-                // Convert to 12-hour format for comparison (1-12)
-                const sH12 = sH % 12 || 12;
-                const eH12 = eH % 12 || 12;
-
-                if (sH12 === eH12) {
-                    showMessage("Validation Error: Start and End Hour digits cannot be the same (e.g. 11 AM and 11 PM).", true);
-                    return; 
-                }
-
-                if (sM === eM) {
-                    showMessage("Validation Error: Start and End Minutes cannot be exactly the same.", true);
-                    return;
-                }
-            }
-            
-            const formattedInTime = formatTimeForN8N(inTimeInput.value);
-            const formattedOutTime = formatTimeForN8N(outTimeInput.value);
-            const originalButtonText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>FINALIZING...</span>`;
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = `<span class="animate-pulse">TRANSMITTING...</span>`;
             submitBtn.disabled = true;
 
-            const submissionPayload = {
+            const payload = {
                 "Log ID": siNoInput.value,
                 "Date": dateInput.value,
                 "Daily Status Report": workDoneTextarea.value,
-                "StartTime": formattedInTime,
-                "EndTime": formattedOutTime,
+                "StartTime": formatTimeForN8N(inTimeInput.value),
+                "EndTime": formatTimeForN8N(outTimeInput.value),
                 "submittedAt": new Date().toISOString(),
                 "formMode": "web-submission"
             };
 
-            let response;
             try {
-                response = await fetchWithExponentialBackoff(N8N_SUBMIT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(submissionPayload)
-                });
-
+                const response = await fetchWithExponentialBackoff(N8N_SUBMIT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (response.ok) {
-                    showMessage("Report Finalized Successfully!", false);
+                    fireConfetti();
+                    showMessage("Report Logged Successfully!");
                     logForm.reset();
-                    initializeDateTime(); 
+                    localStorage.removeItem('dailyLog_draft');
+                    initializeDateTime();
                     checkFormValidity();
-                } else {
-                    const errorText = await response.text();
-                    throw new Error(`N8N Webhook failure: ${errorText.substring(0, 50)}...`);
-                }
-            } catch (error) {
-                console.error('Submission Error:', error);
-                showMessage("Finalization Failed. Check Console.", true);
-            } finally {
-                submitBtn.innerHTML = originalButtonText;
-                if (!response?.ok) {
-                    submitBtn.disabled = false;
-                }
-            }
+                } else { throw new Error("API responded with error"); }
+            } catch (error) { showMessage("Transmission failed.", true); }
+            finally { submitBtn.innerHTML = originalHTML; if (!submitBtn.disabled) submitBtn.disabled = false; }
         });
 
-        suggestBtn.addEventListener('click', async () => {
-            const userQuery = workDoneTextarea.value.trim();
-            if (!userQuery) {
-                showMessage("Enter keywords first.", true);
-                return;
-            }
-            const originalButtonText = suggestBtn.innerHTML;
-            suggestBtn.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>Processing...</span>`;
-            suggestBtn.disabled = true;
-
-            const payload = { keywords: userQuery };
-            try {
-                const response = await fetchWithExponentialBackoff(N8N_REWRITE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                let result;
-                try {
-                    result = await response.json();
-                } catch (e) {
-                     // ignore json error, try text
-                }
-
-                if (result && result.rewritten_text) {
-                    workDoneTextarea.value = result.rewritten_text.trim();
-                    showMessage("AI Rewrite successful.", false);
-                } else {
-                     const textResult = await response.text();
-                     if (textResult) {
-                         workDoneTextarea.value = textResult.trim();
-                         showMessage("AI Rewrite successful.", false);
-                     } else {
-                         throw new Error("Empty response");
-                     }
-                }
-            } catch (error) {
-                console.error('AI Rewrite Error:', error);
-                showMessage("AI Rewrite Failed.", true);
-            } finally {
-                suggestBtn.innerHTML = originalButtonText;
-                suggestBtn.disabled = false;
-                checkFormValidity();
-            }
-        });
-
-        async function fetchWithExponentialBackoff(url, options, retries = 4, delay = 1000) {
-            try {
-                return await fetch(url, options);
-            } catch (error) {
-                if (retries > 0) {
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    return fetchWithExponentialBackoff(url, options, retries - 1, delay * 2);
-                } else {
-                    throw error;
-                }
-            }
-        }
+        initializeDateTime();
+        checkFormValidity();
     });
 </script>
 </body>

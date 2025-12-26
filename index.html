@@ -331,7 +331,8 @@
             width: 100% !important;
             min-width: 0 !important;
             max-width: none !important;
-            justify-content: space-around;
+            /* FIXED: Use flex-start to prevent days from shifting/spacing strangely */
+            justify-content: flex-start !important; 
         }
         
         /* HIDDEN NAVIGATION BUTTONS (PREV/NEXT) */
@@ -380,11 +381,13 @@
             border: 1px solid rgba(255,255,255,0.05) !important;
             color: #cbd5e1 !important;
             transition: all 0.1s !important;
-            margin: 1px !important;
+            /* FIXED: Remove margins and use strict grid width */
+            margin: 0 !important;
             height: 38px !important;
             line-height: 38px !important;
-            flex-basis: 14% !important;
-            max-width: 14% !important;
+            flex-basis: 14.2857% !important; /* 100% / 7 days */
+            max-width: 14.2857% !important;
+            box-sizing: border-box !important;
         }
         
         .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {

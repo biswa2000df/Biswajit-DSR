@@ -100,7 +100,7 @@
             overflow: hidden;
             transform: translateZ(0);
         }
-
+        
         /* Shimmer effect on button */
         .submit-btn::after {
             content: '';
@@ -112,7 +112,7 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: 0.5s;
         }
-
+        
         .submit-btn:not(:disabled):hover::after {
             left: 100%;
             transition: 0.5s ease-in-out;
@@ -173,7 +173,7 @@
         .gemini-logo {
             animation: logo-pulse 2s infinite ease-in-out;
         }
-
+        
         /* ----------------------------------------------------- */
         /* NEW: STARLIGHT HOLOGRAM TITLE (True Premium)          */
         /* ----------------------------------------------------- */
@@ -192,25 +192,25 @@
             color: #fff;
             position: relative;
             z-index: 1;
-
+            
             /* The Magic Gradient */
             background: linear-gradient(
-                to right,
-                #cbd5e1 20%,
-                #fff 40%,
-                #38bdf8 60%,
+                to right, 
+                #cbd5e1 20%, 
+                #fff 40%, 
+                #38bdf8 60%, 
                 #cbd5e1 80%
             );
             background-size: 200% auto;
-
+            
             /* Clip to text */
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-
+            
             /* Animation */
             animation: shine-text 5s linear infinite;
-
+            
             /* Glow filter */
             filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
         }
@@ -265,7 +265,7 @@
             justify-content: center;
             color: #fff;
             /* Inner shadow for depth + Outer glow */
-            box-shadow:
+            box-shadow: 
                 inset 0 4px 10px rgba(0,0,0,0.5),
                 0 0 20px rgba(56, 189, 248, 0.15);
             backdrop-filter: blur(8px);
@@ -277,11 +277,11 @@
         .duration-circle:hover {
             transform: scale(1.05);
             border-color: rgba(168, 85, 247, 0.5);
-            box-shadow:
+            box-shadow: 
                 inset 0 4px 10px rgba(0,0,0,0.5),
                 0 0 30px rgba(168, 85, 247, 0.3);
         }
-
+        
         /* Rotating Ring Animation */
         .duration-circle::before {
             content: '';
@@ -320,7 +320,7 @@
             letter-spacing: 1px;
             font-weight: 700;
         }
-
+        
         /* Highlight text color */
         .highlight-text {
             background: linear-gradient(to right, #ffffff, #38bdf8);
@@ -338,14 +338,14 @@
             z-index: 1000;
             min-width: 250px;
             padding: 1rem;
-            border-radius: 0.75rem;
+            border-radius: 0.75rem; 
             font-weight: 600;
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            transform: translateX(120%);
+            transform: translateX(120%); 
             transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -357,7 +357,7 @@
         /* CUSTOM CALENDAR STYLES (ENHANCED HOLOGRAPHIC LOOK)    */
         /* ----------------------------------------------------- */
         .flatpickr-calendar {
-            background: rgba(15, 23, 42, 0.98) !important;
+            background: rgba(15, 23, 42, 0.98) !important; 
             border: 1px solid rgba(56, 189, 248, 0.2) !important;
             border-radius: 1rem !important;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8) !important;
@@ -387,7 +387,7 @@
             border: none !important;
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.5) !important;
         }
-
+        
         /* Helper animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(30px); }
@@ -397,7 +397,7 @@
             0%, 100% { filter: drop-shadow(0 0 2px rgba(56,189,248,0.8)); opacity: 1; }
             50% { filter: drop-shadow(0 0 8px rgba(168,85,247,0.8)); opacity: 0.8; }
         }
-
+        
         /* Restored Gemini Pulse Shadow Animation */
         @keyframes gemini-pulse-shadow {
             0%, 100% {
@@ -602,12 +602,12 @@
         const dateInput = document.getElementById('date');
         const inTimeInput = document.getElementById('in_time');
         const outTimeInput = document.getElementById('out_time');
-
+        
         // Duration Content Wrapper
         const durationContent = document.getElementById('duration-content');
 
         // --- Custom Calendar Logic ---
-        let filledDays = [];
+        let filledDays = []; 
 
         async function fetchFilledDates(instance) {
             console.log("Calendar Opened: Fetching filled dates...");
@@ -626,16 +626,6 @@
                         filledDays = data.AlreadyFieldDate.map(d => Number(d));
                         console.log("Fetched filled dates:", filledDays);
                         if (instance) instance.redraw();
-                    }
-                } else if (response.status === 500) {
-                    // Specific Error Handling for 500
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.status === "error" && errorData.message) {
-                            showMessage(errorData.message, true);
-                        }
-                    } catch (e) {
-                        console.error("Error parsing 500 error response:", e);
                     }
                 }
             } catch (error) {
@@ -696,18 +686,6 @@
                         updateDurationDisplay();
                         checkFormValidity();
                     }
-                } else if (response.status === 500) {
-                     // Specific Error Handling for 500
-                     try {
-                         const errorData = await response.json();
-                         if (errorData.status === "error" && errorData.message) {
-                             showMessage(errorData.message, true);
-                             return; // Stop further processing
-                         }
-                     } catch(e) { /* Fallback to default error below if parsing fails */ }
-                     showMessage("Failed to fetch data.", true);
-                } else {
-                    showMessage("Failed to fetch data.", true);
                 }
             } catch (error) {
                 console.error("Error:", error);
@@ -720,6 +698,7 @@
             dateFormat: "Y-m-d",
             theme: "dark",
             disableMobile: "true",
+            maxDate: "today", // Disable all future dates
             onOpen: function(selectedDates, dateStr, instance) {
                 fetchFilledDates(instance);
             },
@@ -769,7 +748,7 @@
 
             let endMinute = startMinute + shiftMinutes;
             let carryHour = 0;
-
+            
             // Handle minute overflow
             if (endMinute >= 60) {
                 endMinute -= 60;
@@ -777,7 +756,7 @@
             }
 
             let endHour = startHour + shiftHours + carryHour;
-
+            
             // Handle wrap-around midnight
             if (endHour >= 24) {
                 endHour %= 24;
@@ -806,7 +785,7 @@
 
             // Handle next day overlap
             if (endTotalMins < startTotalMins) {
-                endTotalMins += (24 * 60);
+                endTotalMins += (24 * 60); 
             }
 
             const diffMins = endTotalMins - startTotalMins;
@@ -854,7 +833,7 @@
             updateLogIdBasedOnDate(formattedDate);
             inTimeInput.value = formattedTime;
             outTimeInput.value = calculateEndTime(formattedTime);
-            updateDurationDisplay();
+            updateDurationDisplay(); 
         }
 
         function checkFormValidity() {
@@ -927,7 +906,7 @@
             } catch (error) {
                 console.error("Manual Trigger Error:", error);
                 // Assume success for UX if it's just a trigger, or show generic message
-                showMessage("Trigger signal sent.", false);
+                showMessage("Trigger signal sent.", false); 
             } finally {
                 manualTriggerBtn.innerHTML = originalContent;
                 manualTriggerBtn.disabled = false;
@@ -935,7 +914,7 @@
         });
 
         logForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+            e.preventDefault(); 
             if (submitBtn.disabled) {
                 showMessage("All mandatory fields must be completed.", true);
                 return;
@@ -944,7 +923,7 @@
             // --- VALIDATION: Hour and Minute Digit Check ---
             const startParts = inTimeInput.value.split(':').map(Number);
             const endParts = outTimeInput.value.split(':').map(Number);
-
+            
             if (startParts.length === 2 && endParts.length === 2) {
                 const [sH, sM] = startParts;
                 const [eH, eM] = endParts;
@@ -955,7 +934,7 @@
 
                 if (sH12 === eH12) {
                     showMessage("Validation Error: Start and End Hour digits cannot be the same (e.g. 11 AM and 11 PM).", true);
-                    return;
+                    return; 
                 }
 
                 if (sM === eM) {
@@ -963,11 +942,11 @@
                     return;
                 }
             }
-
+            
             const formattedInTime = formatTimeForN8N(inTimeInput.value);
             const formattedOutTime = formatTimeForN8N(outTimeInput.value);
             const originalButtonText = submitBtn.innerHTML;
-
+            
             submitBtn.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -994,50 +973,18 @@
                     body: JSON.stringify(submissionPayload)
                 });
 
-                // Attempt to parse response body as JSON, fallback to text/null
-                let responseData = null;
-                const responseText = await response.text();
-                try {
-                    responseData = JSON.parse(responseText);
-                } catch (e) { /* ignore */ }
-
                 if (response.ok) {
-                    // SUCCESS HANDLING
-                    let successMsg = "Report Finalized Successfully!";
-                    if (responseData && responseData.Message) {
-                        successMsg = responseData.Message;
-                    }
-
-                    showMessage(successMsg, false);
+                    showMessage("Report Finalized Successfully!", false);
                     logForm.reset();
-                    initializeDateTime();
+                    initializeDateTime(); 
                     checkFormValidity();
                 } else {
-                    // ERROR HANDLING
-                    let errorMsg = "Finalization Failed.";
-
-                    if (responseData) {
-                        // Check for structured error { status: "error", message: "..." }
-                        if (responseData.status === "error" && responseData.message) {
-                            errorMsg = responseData.message;
-                        }
-                        // Check for common error formats
-                        else if (responseData.Message) {
-                             errorMsg = responseData.Message;
-                        } else if (responseData.message) {
-                             errorMsg = responseData.message;
-                        }
-                    } else if (responseText) {
-                        // Use raw text if no JSON, truncated
-                        errorMsg = responseText.substring(0, 100);
-                    }
-
-                    throw new Error(errorMsg);
+                    const errorText = await response.text();
+                    throw new Error(`N8N Webhook failure: ${errorText.substring(0, 50)}...`);
                 }
             } catch (error) {
                 console.error('Submission Error:', error);
-                // Display the specific API error message
-                showMessage(error.message, true);
+                showMessage("Finalization Failed. Check Console.", true);
             } finally {
                 submitBtn.innerHTML = originalButtonText;
                 if (!response?.ok) {
@@ -1068,9 +1015,9 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-
+                
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
+                
                 let result;
                 try {
                     result = await response.json();

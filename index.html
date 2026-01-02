@@ -8,13 +8,20 @@
     <meta name="author" content="Biswajit Sahoo">
     <meta name="robots" content="index, follow">
 
+    <!-- PWA / Mobile Capable -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#030712">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFwbW9zeXMgRFNSIiwKICAic2hvcnRfbmFtZSI6ICJBcG1vc3lzIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwMzA3MTIiLAogICJ0aGVtZV9jb2xvciI6ICIjMDMwNzEyIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3dhbGstb24vd2ViLWFwcC1tYW5pZmVzdC9pY29uLTE5Mi5wbmciLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0KICBdCn0=">
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Biswajit Sahoo | Engineering Workspace">
     <meta property="og:description" content="Secure daily engineering log and status tracking terminal.">
     <meta property="og:site_name" content="Engineering Log Workspace">
 
-    <title>Workspace | Secure Access</title>
+    <title>Biswajit | Secure Access</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -143,28 +150,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #020617; /* Deepest Navy/Black */
+            background: #000;
             transition: opacity 0.5s ease-in-out, visibility 0.5s;
             overflow: hidden;
-            padding: 1rem; /* Safety padding for mobile */
+            padding: 1rem;
         }
 
-        /* 3D Cyber Grid Background */
-        .cyber-grid {
+        /* Particle Canvas for Login */
+        #login-particles {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background-image:
-                linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            animation: gridFlow 10s linear infinite;
-            pointer-events: none;
-            mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
-            -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%);
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
         }
 
         #login-view.hidden {
@@ -173,61 +169,67 @@
             pointer-events: none;
         }
 
-        /* Premium Glass Card */
+        /* Premium Obsidian Card */
         .login-card {
             width: 100%;
-            max-width: 440px;
-            background: rgba(10, 15, 30, 0.6);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 400px;
+            background: rgba(10, 10, 15, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 2rem 1.5rem; /* Mobile first padding */
-            box-shadow:
-                0 0 0 1px rgba(0, 0, 0, 0.5),
-                0 25px 50px -12px rgba(0, 0, 0, 0.8),
-                0 0 100px -20px rgba(6, 182, 212, 0.15); /* Cyan Glow */
+            padding: 3rem 2rem;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 20px 50px -10px rgba(0, 0, 0, 0.8);
             position: relative;
             overflow: hidden;
-            animation: float 8s ease-in-out infinite;
+            z-index: 10;
+            transform: translateZ(0); /* Hardware acceleration */
         }
 
-        @media (min-width: 640px) {
-            .login-card {
-                padding: 3.5rem 2.5rem;
-            }
-        }
-
-        /* Scanner Line */
-        .login-scanner {
+        /* Glow Effect on Card Top */
+        .login-card::after {
+            content: '';
             position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
+            top: 0; left: 25%; width: 50%; height: 1px;
             background: linear-gradient(90deg, transparent, #06b6d4, transparent);
             box-shadow: 0 0 15px #06b6d4;
-            opacity: 0.8;
-            z-index: 10;
-            pointer-events: none;
-            animation: laser 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            opacity: 0.5;
         }
 
-        /* Tech Corners */
-        .corner-accent {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            border-color: rgba(6, 182, 212, 0.6);
-            border-style: solid;
-            pointer-events: none;
-            transition: all 0.3s ease;
+        /* Fingerprint Scanner */
+        .fingerprint-container {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
-        .login-card:hover .corner-accent { border-color: #06b6d4; width: 20px; height: 20px; box-shadow: 0 0 10px rgba(6,182,212,0.4); }
-        .tl { top: 0; left: 0; border-width: 2px 0 0 2px; border-radius: 24px 0 0 0; }
-        .tr { top: 0; right: 0; border-width: 2px 2px 0 0; border-radius: 0 24px 0 0; }
-        .bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; border-radius: 0 0 0 24px; }
-        .br { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-radius: 0 0 24px 0; }
+        .fingerprint-icon {
+            width: 48px; height: 48px;
+            color: #06b6d4;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px rgba(6, 182, 212, 0.5));
+        }
+        .scanner-beam {
+            position: absolute;
+            width: 100%; height: 2px;
+            background: #22d3ee;
+            box-shadow: 0 0 10px #22d3ee, 0 0 5px #fff;
+            top: 0;
+            opacity: 0;
+            animation: beamScan 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes beamScan {
+            0% { top: 10%; opacity: 0; width: 80%; left: 10%; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 90%; opacity: 0; width: 80%; left: 10%; }
+        }
 
         /* Input Field styling */
         .login-input-group {
@@ -237,29 +239,25 @@
 
         .login-input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #fff;
             font-family: 'JetBrains Mono', monospace;
             text-align: center;
-            font-size: 1.75rem; /* Responsive font size */
+            font-size: 1.25rem;
             letter-spacing: 0.15em;
             padding: 1rem;
             border-radius: 12px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        @media (min-width: 640px) {
-            .login-input { font-size: 2rem; }
+            font-weight: 600;
         }
 
         .login-input:focus {
             outline: none;
             border-color: #06b6d4;
-            background: rgba(6, 182, 212, 0.05);
-            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+            background: rgba(6, 182, 212, 0.03);
+            box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.5), 0 0 20px rgba(6, 182, 212, 0.1);
             transform: scale(1.02);
         }
 
@@ -276,34 +274,27 @@
             color: #000;
             font-family: 'Inter', sans-serif;
             font-weight: 800;
-            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             border: none;
             position: relative;
             overflow: hidden;
             z-index: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
-        .btn-premium::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, #06b6d4, #8b5cf6, #06b6d4);
-            background-size: 200% 100%;
-            z-index: -1;
-            transition: opacity 0.3s;
-            animation: shimmer 3s infinite linear;
-            opacity: 0;
-        }
+
         .btn-premium:not(:disabled):hover {
-            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
         }
-        .btn-premium:not(:disabled):hover::before {
-            opacity: 1;
-        }
+
         .btn-premium:disabled {
             background: rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.3);
             cursor: not-allowed;
+            box-shadow: none;
         }
 
         @keyframes shake {
@@ -409,25 +400,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #f87171;
-            transition: all 0.2s;
+            transition: all 0.3s;
             cursor: pointer;
+            backdrop-filter: blur(5px);
         }
         .btn-logout:hover {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.25);
             border-color: #ef4444;
             color: #fff;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
         }
 
         /* GENERIC ICON BUTTON (Copy, Voice) */
         .btn-icon-action {
-            /* display: flex; Removed to allow responsive utility classes to control display */
+            display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
@@ -467,11 +460,15 @@
         .btn-status {
             background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); color: #22d3ee;
             font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-            padding: 6px 12px; display: flex; align-items: center; gap: 6px; border-radius: 8px;
+            padding: 6px 16px; display: flex; align-items: center; gap: 8px; border-radius: 99px;
             transition: all 0.3s; cursor: pointer;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.1);
         }
         .btn-status:hover {
-            background: rgba(6, 182, 212, 0.2); box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); color: white;
+            background: rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+            color: white; border-color: #06b6d4;
+            transform: translateY(-1px);
         }
 
         .chip {
@@ -482,48 +479,6 @@
         .chip:hover {
             background: rgba(6, 182, 212, 0.2); border-color: rgba(6, 182, 212, 0.6); color: #fff;
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
-        }
-
-        /* NEW PENTAGONAL DURATION WIDGET */
-        .widget-gauge-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-            filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.2));
-        }
-
-        .widget-gauge-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
-            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-            z-index: 0;
-            animation: pulse-slow 3s infinite alternate;
-        }
-
-        .widget-gauge-pentagon {
-            width: 96px;
-            height: 96px;
-            background: #030712;
-            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .pentagon-ring {
-            position: absolute;
-            inset: 0;
-            background: conic-gradient(from 0deg, transparent 20%, #06b6d4 50%, #8b5cf6 80%, transparent 100%);
-            animation: spin 4s linear infinite;
-            opacity: 0.3;
-            z-index: -1;
         }
 
         /* ENHANCED TOAST */
@@ -561,8 +516,8 @@
         }
         .status-modal-overlay.active { opacity: 1; pointer-events: auto; }
         .status-modal-content {
-            width: 95%; max-width: 800px; max-height: 85vh; overflow-y: hidden; background: rgba(10, 10, 15, 0.9);
-            border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 16px;
+            width: 95%; max-width: 800px; max-height: 85vh; overflow-y: hidden; background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 20px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8); transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column;
         }
@@ -599,6 +554,15 @@
             box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.2);
         }
 
+        /* Toggle Button in Modal */
+        .view-toggle-btn {
+            padding: 6px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #64748b; transition: all 0.2s;
+        }
+        .view-toggle-btn.active {
+            background: rgba(6, 182, 212, 0.2); color: #22d3ee; border-color: rgba(6, 182, 212, 0.5);
+        }
+
         /* Flatpickr Overrides */
         .flatpickr-calendar {
             background: rgba(3, 7, 18, 0.95) !important; backdrop-filter: blur(25px) !important;
@@ -625,6 +589,15 @@
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
         textarea::-webkit-scrollbar { width: 4px; }
         textarea::-webkit-scrollbar-thumb { background: #1e293b; }
+
+        /* Custom Checkbox */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #ef4444;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #ef4444;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-3 md:p-6 selection:bg-cyan-500 selection:text-black">
@@ -656,41 +629,36 @@
 
 <!-- ================= LOGIN VIEW (GATEKEEPER) ================= -->
 <section id="login-view">
-    <!-- Moving Cyber Grid Background -->
-    <div class="cyber-grid"></div>
+    <!-- Interactive Particle Canvas Background -->
+    <canvas id="login-particles"></canvas>
 
     <div class="login-card flex flex-col items-center">
-        <!-- Laser Scanner Element -->
-        <div class="login-scanner"></div>
-
-        <!-- Tech Corner Accents -->
-        <div class="corner-accent tl"></div>
-        <div class="corner-accent tr"></div>
-        <div class="corner-accent bl"></div>
-        <div class="corner-accent br"></div>
-
-        <!-- Biometric Icon -->
-        <div class="w-24 h-24 rounded-full bg-cyan-900/10 flex items-center justify-center mb-8 ring-1 ring-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.15)] relative">
-            <svg class="w-12 h-12 text-cyan-400 z-10 opacity-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <!-- Fingerprint Scanner Element -->
+        <div class="fingerprint-container">
+            <!-- SVG Fingerprint Icon -->
+            <svg class="fingerprint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 4a8.5 8.5 0 0 0-8.5 8.5c0 1.9.6 3.6 1.7 5m13.6 0a8.5 8.5 0 0 0-6.8-13.5"/>
+                <path d="M12 7a5.5 5.5 0 0 0-5.5 5.5c0 1 .3 2 .8 2.8m9.4 0A5.5 5.5 0 0 0 12 7"/>
+                <path d="M12 10a2.5 2.5 0 0 0-2.5 2.5c0 .6.2 1.1.5 1.5m4 0a2.5 2.5 0 0 0-2-4"/>
+                <path d="M12 21v-4"/>
+                <path d="M8 17.5a9 9 0 0 1 8 0"/>
+                <path d="M5.5 13.5a12 12 0 0 1 13 0"/>
             </svg>
-            <!-- Orbiting rings -->
-            <div class="absolute inset-0 border border-cyan-500/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
-            <div class="absolute inset-2 border border-dashed border-cyan-500/30 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+            <div class="scanner-beam"></div>
         </div>
 
-        <h1 class="text-4xl font-black text-white tracking-tighter mb-2 uppercase font-sans text-center">Identity <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">Verification</span></h1>
-        <p class="text-[10px] text-slate-400 mb-10 font-mono tracking-[0.3em] uppercase opacity-70 text-center">Secure Terminal Access v2.2</p>
+        <h1 class="text-3xl font-black text-white tracking-tighter mb-1 uppercase font-sans text-center">Identity <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Verification</span></h1>
+        <p class="text-[10px] text-slate-400 mb-8 font-mono tracking-[0.3em] uppercase opacity-70 text-center">Secure Terminal Access v2.9</p>
 
         <div class="w-full">
             <div class="login-input-group">
-                <label for="login-emp-id" class="text-[9px] uppercase text-cyan-500 font-bold tracking-widest mb-2 block text-center opacity-80">Employee Identifier</label>
+                <label for="login-emp-id" class="text-[9px] uppercase text-cyan-500 font-bold tracking-widest mb-3 block text-center opacity-80">Employee Identifier</label>
                 <!-- Default Value set to A- -->
                 <input type="text" id="login-emp-id" class="login-input" value="A-" maxlength="7" spellcheck="false" aria-label="Employee ID Input" autocomplete="username">
-                <p id="login-helper" class="text-[10px] text-slate-500 text-center font-mono mt-2 h-4 tracking-wider transition-colors duration-300">FORMAT: A-XXXXX</p>
+                <p id="login-helper" class="text-[10px] text-slate-500 text-center font-mono mt-3 h-4 tracking-wider transition-colors duration-300">FORMAT: A-XXXXX</p>
             </div>
 
-            <button id="login-btn" class="btn-premium w-full py-5 rounded-xl text-sm shadow-xl" disabled aria-label="Authenticate Access">
+            <button id="login-btn" class="btn-premium w-full py-4 rounded-xl text-sm shadow-xl mt-2" disabled aria-label="Authenticate Access">
                 Authenticate Access
             </button>
         </div>
@@ -699,52 +667,55 @@
 
 
 <!-- ================= DASHBOARD VIEW (INITIALLY HIDDEN) ================= -->
-<main id="dashboard-view" class="pro-card rounded-2xl md:rounded-3xl p-6 md:p-12 z-10 mx-auto">
+<main id="dashboard-view" class="pro-card rounded-2xl md:rounded-3xl p-6 md:p-12 z-10 mx-auto relative">
+
+    <!-- Absolute Logout Button - Placed outside header to guarantee no overlap -->
+    <button id="logout-btn" class="btn-logout absolute top-4 right-4 md:top-6 md:right-6 z-20" title="Secure Logout" aria-label="Logout">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+    </button>
 
     <!-- Header -->
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 border-b border-white/5 pb-6">
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 border-b border-white/5 pb-6 relative pr-12 md:pr-0">
         <div class="w-full md:w-auto">
             <div class="flex flex-wrap items-center gap-2 mb-2">
                 <span class="h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest">Workspace v2.3 <span class="text-slate-600 mx-1">|</span> <span id="live-clock" class="text-slate-400 whitespace-nowrap">00:00:00</span></span>
+                <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest">Apmosys v2.8 <span class="text-slate-600 mx-1">|</span> <span id="live-clock" class="text-slate-400 whitespace-nowrap">00:00:00</span></span>
             </div>
             <!-- Responsive Title Size -->
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tighter text-white leading-tight">
                 <span id="header-first-name">BISWAJIT</span> <span id="header-last-name" class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">SAHOO</span>
             </h2>
             <p class="text-sm md:text-base text-slate-400 mt-1 font-light tracking-wide flex items-center gap-2">
-                Daily Engineering Progress Log
+                Daily Status Report
                 <span class="px-2 py-0.5 rounded bg-white/10 text-white text-[10px] font-mono" id="header-emp-id">A-22169</span>
+                <!-- Last Log Indicator (Real Data) -->
+                <span id="last-log-container" class="hidden flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-mono border border-emerald-500/20" title="Last Filled Date">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    <span id="last-log-display">Loading...</span>
+                </span>
             </p>
         </div>
 
-        <div class="mt-4 md:mt-0 w-full md:w-auto flex flex-col items-end gap-3">
-            <div class="flex gap-2">
-                <!-- Status Button -->
+        <div class="mt-6 md:mt-0 w-full md:w-auto flex flex-col items-end gap-3 pt-0">
+            <div class="flex gap-2 items-center w-full md:w-auto justify-end">
+                <!-- Status Button (Enhanced Design) -->
                 <button id="get-status-btn" class="btn-status w-full md:w-auto justify-center" aria-label="View Status Log">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     VIEW STATUS
                 </button>
-
-                <!-- Logout Button (NEW) -->
-                <button id="logout-btn" class="btn-logout" title="Secure Logout" aria-label="Logout">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                </button>
             </div>
 
-            <button id="manual-trigger-btn" class="w-full md:w-auto group flex items-center justify-center md:justify-start gap-3 px-4 py-2 rounded-lg bg-black/40 border border-white/10 hover:border-cyan-500/50 transition-all cursor-pointer" aria-label="Trigger N8N Engine">
+            <!-- Redesigned N8N Engine Button (Pill Style) -->
+            <button id="manual-trigger-btn" class="group flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-black/40 border border-white/10 hover:border-green-500/50 transition-all cursor-pointer w-full md:w-auto" aria-label="Trigger N8N Engine">
                 <div class="relative">
-                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
                     <div class="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-75"></div>
                 </div>
-                <div class="flex flex-col text-left">
-                    <span class="text-[10px] uppercase text-slate-500 font-bold group-hover:text-cyan-400 transition-colors">N8N Engine</span>
-                    <span class="text-xs font-mono text-white">Online</span>
-                </div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold group-hover:text-green-400 transition-colors tracking-wider">N8N Online</span>
             </button>
         </div>
     </header>
@@ -752,15 +723,15 @@
     <!-- Form -->
     <form id="log-form" class="space-y-6 md:space-y-8" onsubmit="return false;">
 
-        <!-- Meta Data Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
+        <!-- Meta Data Grid (Mobile Optimized: 1/3 + 2/3 layout) -->
+        <div class="grid grid-cols-3 md:grid-cols-12 gap-4 md:gap-6">
             <!-- Log ID -->
-            <div class="md:col-span-3">
-                <label for="si_no" class="pro-label">Log Sequence</label>
+            <div class="col-span-1 md:col-span-3">
+                <label for="si_no" class="pro-label">Log Seq</label>
                 <input type="number" id="si_no" name="si_no" class="pro-input w-full p-3 md:p-3 rounded-lg text-center font-bold text-lg text-cyan-400 focus:text-cyan-300" readonly placeholder="--" aria-label="Log Sequence Number">
             </div>
             <!-- Date -->
-            <div class="md:col-span-9">
+            <div class="col-span-2 md:col-span-9">
                 <label for="date" class="pro-label">Date Entry</label>
                 <div class="relative group">
                     <input type="text" id="date" name="date" class="pro-input w-full p-3 md:p-3 rounded-lg pl-12 cursor-pointer text-slate-300 group-hover:text-cyan-300 transition-colors" placeholder="YYYY-MM-DD" required aria-label="Select Date">
@@ -774,15 +745,14 @@
                 <label for="work_done" class="pro-label text-cyan-400">Activity Report</label>
 
                 <div class="flex gap-2">
-                    <!-- COPY BUTTON -->
-                    <button type="button" id="copy-report-btn" class="btn-icon-action flex" title="Copy to Clipboard" aria-label="Copy Activity Report">
+                    <!-- COPY BUTTON (Initially Hidden) -->
+                    <button type="button" id="copy-report-btn" class="btn-icon-action hidden" title="Copy to Clipboard" aria-label="Copy Activity Report">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                     </button>
 
-                    <!-- VOICE BUTTON (NEW) -->
-                    <!-- Added 'hidden md:flex': Hidden on mobile, Flex on Medium screens (Laptop) and up -->
+                    <!-- VOICE BUTTON (Responsive: Hidden on Mobile, Flex on MD+) -->
                     <button type="button" id="voice-record-btn" class="btn-icon-action group relative hidden md:flex" title="Voice Dictation" aria-label="Record Voice">
                         <!-- Standard Mic -->
                         <svg id="mic-icon" class="w-4 h-4 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -801,6 +771,13 @@
                         </svg>
                         <span>AI Polish</span>
                     </button>
+
+                    <!-- Clear Button (Initially Hidden) -->
+                    <button type="button" id="clear-text-btn" class="btn-icon-action hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 hidden" title="Clear Text" aria-label="Clear Text">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -818,11 +795,11 @@
             <!-- Quick Task Chips -->
             <div class="flex flex-wrap gap-2 mt-3 items-center">
                 <span class="text-[10px] text-slate-500 uppercase tracking-wider font-bold mr-1 hidden xs:inline">Quick Add:</span>
-                <button type="button" class="chip" onclick="addText('Daily Scrum')">Scrum</button>
-                <button type="button" class="chip" onclick="addText('Bug Fixes:')">Fixes</button>
-                <button type="button" class="chip" onclick="addText('Code Review')">Review</button>
-                <button type="button" class="chip" onclick="addText('Feature Dev:')">Feature</button>
-                <button type="button" class="chip" onclick="addText('Docs Update')">Docs</button>
+                <button type="button" class="chip" onclick="addText('Saturday')">Saturday</button>
+                <button type="button" class="chip" onclick="addText('Sunday')">Sunday</button>
+                <button type="button" class="chip" onclick="addText('Public Holiday')">Public Holiday</button>
+                <button type="button" class="chip" onclick="addText('Doing Manual Testing')">Manual</button>
+                <button type="button" class="chip" onclick="addText('Doing Scripting for New Story')">Automation</button>
             </div>
 
             <div class="text-right mt-1">
@@ -830,37 +807,35 @@
             </div>
         </div>
 
-        <!-- Timing Control Panel -->
-        <div class="bg-black/20 rounded-2xl p-4 md:p-6 border border-white/5 relative overflow-hidden">
+        <!-- NEW: Compact Timing Control Panel -->
+        <div class="bg-black/20 rounded-2xl p-4 border border-white/5 relative overflow-hidden">
             <!-- Background grid for tech feel -->
             <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-8 items-center relative z-10">
+            <div class="flex flex-col md:flex-row gap-6 items-end relative z-10">
 
                 <!-- Start -->
-                <div class="order-1 md:order-none">
+                <div class="flex-1 w-full">
                     <label for="in_time" class="pro-label">Clock In</label>
-                    <input type="time" id="in_time" name="in_time" class="pro-input w-full p-4 rounded-lg text-center text-xl font-mono tracking-widest text-cyan-300" required aria-label="Start Time">
+                    <input type="time" id="in_time" name="in_time" class="pro-input w-full py-2 px-4 rounded-full text-center text-lg font-mono tracking-widest text-cyan-300" required aria-label="Start Time">
                 </div>
 
-                <!-- NEW PENTAGON GAUGE -->
-                <div class="flex flex-col items-center justify-center relative order-2 md:order-none my-2 md:my-0">
-                    <div class="widget-gauge-wrapper group cursor-default">
-                        <div class="widget-gauge-bg"></div>
-                        <div class="widget-gauge-pentagon">
-                            <div class="pentagon-ring"></div>
-                            <div id="duration-content" class="widget-content flex flex-col items-center z-10">
-                                <span class="text-lg font-bold text-white font-mono">--</span>
-                            </div>
-                        </div>
+                <!-- New Modern Digital Duration (Replaces Pentagon) -->
+                <div class="flex flex-col items-center justify-center p-3 w-full md:w-auto min-w-[140px]">
+                    <div class="text-[10px] uppercase text-slate-500 tracking-[0.2em] font-bold mb-1">Total Duration</div>
+                    <div id="duration-content" class="text-3xl font-black text-white font-mono tracking-tighter drop-shadow-[0_0_10px_rgba(6,182,212,0.3)]">
+                        --<span class="text-sm text-slate-600">h</span>
                     </div>
-                    <span class="absolute -bottom-6 text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold">Duration</span>
+                    <!-- Minimal Progress Bar decoration -->
+                    <div class="h-1 w-full bg-slate-800 rounded-full mt-2 overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-cyan-500 to-violet-500 w-1/2 animate-pulse-slow"></div>
+                    </div>
                 </div>
 
                 <!-- End -->
-                <div class="order-3 md:order-none">
+                <div class="flex-1 w-full">
                     <label for="out_time" class="pro-label">Clock Out</label>
-                    <input type="time" id="out_time" name="out_time" class="pro-input w-full p-4 rounded-lg text-center text-xl font-mono tracking-widest text-violet-300" required aria-label="End Time">
+                    <input type="time" id="out_time" name="out_time" class="pro-input w-full py-2 px-4 rounded-full text-center text-lg font-mono tracking-widest text-violet-300" required aria-label="End Time">
                 </div>
             </div>
         </div>
@@ -880,13 +855,13 @@
     SECURE CONNECTION ESTABLISHED • N8N PROTOCOL ACTIVE
 </footer>
 
-<!-- STATUS MODAL COMPONENT -->
+<!-- STATUS MODAL COMPONENT (Redesigned) -->
 <div id="status-modal" class="status-modal-overlay">
     <div class="status-modal-content">
         <!-- Modal Header -->
         <div class="flex items-center justify-between p-6 border-b border-white/10 bg-black/40">
             <div>
-                <h2 class="text-xl font-bold text-white tracking-tight">DSR STATUS LOG</h2>
+                <h2 class="text-xl font-bold text-white tracking-tight">DSR TIMELINE</h2>
                 <p class="text-xs text-slate-400 font-mono mt-1">Employee ID: <span class="text-cyan-400" id="modal-emp-id">--</span></p>
             </div>
             <button id="close-modal-btn" class="text-slate-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5" aria-label="Close Modal">
@@ -915,6 +890,16 @@
                 </select>
             </div>
 
+            <!-- View Toggle -->
+            <div class="flex items-center bg-black/40 rounded-lg p-1 border border-white/10">
+                <button id="view-grid-btn" class="view-toggle-btn active" title="Grid View">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                </button>
+                <button id="view-list-btn" class="view-toggle-btn" title="List View">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+            </div>
+
             <button id="clear-filters-btn" class="group px-3 py-2 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/30 text-slate-400 hover:text-cyan-400 text-xs font-bold uppercase tracking-wider transition-all ml-auto sm:ml-0 whitespace-nowrap flex items-center gap-2" title="Reset Filters" aria-label="Clear Filters">
                 <svg class="w-3 h-3 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -923,22 +908,12 @@
             </button>
         </div>
 
-        <!-- Table Content -->
-        <div class="flex-1 overflow-auto modal-scroll-area p-0">
-            <table class="w-full text-left border-collapse">
-                <thead class="sticky top-0 bg-[#0a0a0f] z-10 shadow-lg">
-                <tr>
-                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-white/10">Date</th>
-                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-white/10">Logged Hours</th>
-                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-white/10 text-right">Current Status</th>
-                </tr>
-                </thead>
-                <tbody id="status-table-body" class="text-sm">
-                <tr>
-                    <td colspan="3" class="p-8 text-center text-slate-500 animate-pulse">Loading data records...</td>
-                </tr>
-                </tbody>
-            </table>
+        <!-- Timeline / Grid Content -->
+        <div class="flex-1 overflow-auto modal-scroll-area p-4 md:p-6">
+            <div id="status-table-body" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Cards will be injected here via JS -->
+                <div class="col-span-full text-center text-slate-500 py-10 animate-pulse">Loading logs...</div>
+            </div>
         </div>
 
         <!-- Modal Footer -->
@@ -965,6 +940,7 @@
 
     // Cache for modal data to enable local filtering
     let statusDataCache = [];
+    let currentViewMode = 'grid'; // 'grid' or 'list'
 
     // --- Loader Functions ---
     const globalLoader = document.getElementById('global-loader');
@@ -1016,7 +992,86 @@
         setTimeout(() => toastEl.classList.remove('show'), 4000);
     }
 
+    // --- Login Background Animation ---
+    const initLoginParticles = () => {
+        const canvas = document.getElementById('login-particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        const resize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        };
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(6, 182, 212, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        const animateParticles = () => {
+            if (document.getElementById('login-view').classList.contains('hidden')) return;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw connections
+            ctx.strokeStyle = 'rgba(6, 182, 212, 0.05)';
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        };
+        animateParticles();
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
+        initLoginParticles();
+
+        // --- PWA Service Worker Stub ---
+        if ('serviceWorker' in navigator) {
+            console.log("Service Worker supported - PWA Ready logic initialized");
+        }
+
         // --- 1. VISUAL EFFECTS ---
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
@@ -1106,6 +1161,10 @@
         const outTimeInput = document.getElementById('out_time');
         const durationContent = document.getElementById('duration-content');
         const saveStatusEl = document.getElementById('save-status');
+        const clearTextBtn = document.getElementById('clear-text-btn');
+        const copyReportBtn = document.getElementById('copy-report-btn');
+        const lastLogDisplay = document.getElementById('last-log-display');
+        const lastLogContainer = document.getElementById('last-log-container');
 
         // Views
         const loginView = document.getElementById('login-view');
@@ -1131,9 +1190,8 @@
         const filterStatus = document.getElementById('filter-status');
         const filterHours = document.getElementById('filter-hours');
         const clearFiltersBtn = document.getElementById('clear-filters-btn');
-
-        // Copy Elements
-        const copyReportBtn = document.getElementById('copy-report-btn');
+        const viewGridBtn = document.getElementById('view-grid-btn');
+        const viewListBtn = document.getElementById('view-list-btn');
 
         // Voice Elements
         const voiceBtn = document.getElementById('voice-record-btn');
@@ -1187,14 +1245,14 @@
             if (isValid) {
                 loginBtn.disabled = false;
                 loginHelper.textContent = "✓ ID PATTERN RECOGNIZED";
-                loginHelper.className = "text-[10px] text-emerald-400 text-center font-mono mt-2 h-4 tracking-wider transition-colors duration-300 font-bold";
+                loginHelper.className = "text-[10px] text-emerald-400 text-center font-mono mt-3 h-4 tracking-wider transition-colors duration-300 font-bold";
                 loginEmpIdInput.classList.remove('error');
                 loginEmpIdInput.style.borderColor = "#34d399";
                 loginEmpIdInput.style.boxShadow = "0 0 15px rgba(52, 211, 153, 0.3)";
             } else {
                 loginBtn.disabled = true;
                 loginHelper.textContent = "FORMAT: A-XXXXX (5 DIGITS)";
-                loginHelper.className = "text-[10px] text-slate-500 text-center font-mono mt-2 h-4 tracking-wider transition-colors duration-300";
+                loginHelper.className = "text-[10px] text-slate-500 text-center font-mono mt-3 h-4 tracking-wider transition-colors duration-300";
 
                 if (e.target.value.length === 7) {
                      loginEmpIdInput.classList.add('error');
@@ -1245,7 +1303,7 @@
                         headerLastName.textContent = lastName;
                         headerEmpId.textContent = currentUser.id;
                         modalEmpId.textContent = currentUser.id;
-                        document.title = `${firstName} ${lastName} | Workspace`;
+                        document.title = `${firstName} ${lastName} | Apmosys`;
 
                         // Transition
                         loginView.classList.add('hidden');
@@ -1279,9 +1337,12 @@
                 loginEmpIdInput.value = "A-";
                 loginBtn.disabled = true;
                 loginHelper.textContent = "FORMAT: A-XXXXX";
-                loginHelper.className = "text-[10px] text-slate-500 text-center font-mono mt-2 h-4 tracking-wider transition-colors duration-300";
+                loginHelper.className = "text-[10px] text-slate-500 text-center font-mono mt-3 h-4 tracking-wider transition-colors duration-300";
 
-                document.title = "Workspace | Secure Access";
+                document.title = "Apmosys | Secure Access";
+
+                // Restart login particles
+                initLoginParticles();
             }, 500);
         });
 
@@ -1350,14 +1411,15 @@
                                 if (data && data["Voice Text"]) {
                                     const newText = data["Voice Text"];
                                     const currentText = workDoneTextarea.value;
-                                    // Append logic
+                                    // Append logic - Removed dash per user request
                                     if (currentText.trim() === "") {
                                         workDoneTextarea.value = newText;
                                     } else {
-                                        workDoneTextarea.value = currentText + "\n- " + newText;
+                                        workDoneTextarea.value = currentText + "\n" + newText;
                                     }
                                     saveToLocal();
                                     checkFormValidity();
+                                    updateActionButtonsVisibility();
                                     showMessage("Voice transcribed successfully.");
                                 } else {
                                     showMessage("No speech detected.", true);
@@ -1395,9 +1457,11 @@
         window.addText = function(text) {
             const textarea = document.getElementById('work_done');
             if (textarea.value.length > 0) {
-                textarea.value += '\n- ' + text + ' ';
+                // Modified: removed dash
+                textarea.value += '\n' + text + ' ';
             } else {
-                textarea.value = '- ' + text + ' ';
+                // Modified: removed dash
+                textarea.value = text + ' ';
             }
             textarea.dispatchEvent(new Event('input'));
             textarea.focus();
@@ -1439,18 +1503,55 @@
             }
         });
 
+        // Toggle Action Buttons (Clear & Copy)
+        function updateActionButtonsVisibility() {
+            const hasText = workDoneTextarea.value.trim().length > 0;
+
+            if (hasText) {
+                clearTextBtn.classList.remove('hidden');
+                clearTextBtn.classList.add('flex');
+
+                copyReportBtn.classList.remove('hidden');
+                copyReportBtn.classList.add('flex');
+            } else {
+                clearTextBtn.classList.add('hidden');
+                clearTextBtn.classList.remove('flex');
+
+                copyReportBtn.classList.add('hidden');
+                copyReportBtn.classList.remove('flex');
+            }
+        }
+
+        clearTextBtn.addEventListener('click', () => {
+            workDoneTextarea.value = '';
+            workDoneTextarea.focus();
+            localStorage.removeItem('dailyLog_draft'); // Also clear draft
+            updateActionButtonsVisibility();
+            checkFormValidity();
+        });
+
         function saveToLocal() {
             localStorage.setItem('dailyLog_draft', workDoneTextarea.value);
             saveStatusEl.style.opacity = '1';
             setTimeout(() => saveStatusEl.style.opacity = '0', 2000);
         }
         const savedDraft = localStorage.getItem('dailyLog_draft');
-        if(savedDraft && !workDoneTextarea.value) { workDoneTextarea.value = savedDraft; }
-        workDoneTextarea.addEventListener('input', () => { saveToLocal(); checkFormValidity(); });
+        if(savedDraft && !workDoneTextarea.value) {
+            workDoneTextarea.value = savedDraft;
+            updateActionButtonsVisibility(); // Ensure visible on load if text exists
+        }
+
+        workDoneTextarea.addEventListener('input', () => {
+            saveToLocal();
+            checkFormValidity();
+            updateActionButtonsVisibility();
+        });
 
         async function fetchFilledDates(instance) {
             try {
-                const response = await fetchWithExponentialBackoff(N8N_DATE_FILL_URL, {
+                // MODIFIED: Added empID as query parameter
+                const url = `${N8N_DATE_FILL_URL}?empID=${currentUser.id}`;
+                const response = await fetchWithExponentialBackoff(url, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' }
                 });
@@ -1459,6 +1560,13 @@
                     if (data && Array.isArray(data.AlreadyFieldDate)) {
                         filledDays = data.AlreadyFieldDate.map(d => Number(d));
                         if (instance) instance.redraw();
+
+                        // NEW: Update Last Log Indicator
+                        if (filledDays.length > 0) {
+                            const maxDay = Math.max(...filledDays);
+                            lastLogDisplay.textContent = `Last Entry: Day ${maxDay}`;
+                            lastLogContainer.classList.remove('hidden');
+                        }
                     }
                 }
             } catch (error) { console.error("Date fetch error", error); }
@@ -1467,10 +1575,12 @@
         async function fetchWorkDoneForDate(dayNumber) {
             showLoader("SYNCING DATABASE...");
             try {
-                const response = await fetchWithExponentialBackoff(N8N_EDIT_WORK_DONE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
-                    body: JSON.stringify({ "preFieldDate": String(dayNumber) })
+                // MODIFIED: Moved data to query parameters (empID and preFieldDate)
+                const url = `${N8N_EDIT_WORK_DONE_URL}?empID=${currentUser.id}&preFieldDate=${dayNumber}`;
+                const response = await fetchWithExponentialBackoff(url, {
+                    method: 'GET', // Changed from POST to GET as per instructions
+                    headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' }
+                    // body removed
                 });
                 if (response.ok) {
                     const data = await response.json();
@@ -1479,11 +1589,13 @@
                         if (record["SI No"]) siNoInput.value = record["SI No"];
                         if (record["WorkDone"] && record["WorkDone"].trim() !== "") {
                             workDoneTextarea.value = record["WorkDone"];
+                            updateActionButtonsVisibility(); // Update clear button visibility
                             if (record["InTime"]) inTimeInput.value = convert12hTo24h(record["InTime"]);
                             if (record["OutTime"]) outTimeInput.value = convert12hTo24h(record["OutTime"]);
                             showMessage("Entry loaded.");
                         } else {
                             workDoneTextarea.value = "";
+                            updateActionButtonsVisibility();
                             setDefaultTimes();
                         }
                         updateDurationDisplay(); checkFormValidity();
@@ -1528,7 +1640,7 @@
             if (minutes === 0) {
                 durationContent.innerHTML = `<span class="text-3xl font-black text-white leading-none tracking-tighter">${hours}<span class="text-sm text-cyan-400 align-top ml-1">h</span></span>`;
             } else {
-                durationContent.innerHTML = `<div class="flex flex-col leading-none items-center"><span class="text-2xl font-bold text-white tracking-tighter">${hours}<span class="text-[10px] text-cyan-400 ml-0.5">h</span></span><span class="text-sm font-medium text-violet-400 tracking-tighter">${minutes}<span class="text-[8px] ml-0.5">m</span></span></div>`;
+                durationContent.innerHTML = `<div class="flex flex-col leading-none items-center"><span class="text-3xl font-bold text-white tracking-tighter">${hours}<span class="text-sm text-cyan-400 ml-0.5">h</span></span><span class="text-sm font-medium text-violet-400 tracking-tighter">${minutes}<span class="text-[8px] ml-0.5">m</span></span></div>`;
             }
         }
 
@@ -1556,13 +1668,13 @@
         function getStatusStyling(statusText) {
             const status = statusText ? statusText.toLowerCase() : "";
             if (status.includes("pending")) {
-                return "bg-yellow-400 text-black border-yellow-500 shadow-[0_0_10px_rgba(250,204,21,0.4)]";
+                return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
             }
             else if (status.includes("approved")) {
-                return "bg-emerald-400 text-black border-emerald-500 shadow-[0_0_10px_rgba(52,211,153,0.4)]";
+                return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
             }
             else {
-                return "bg-slate-200 text-black border-slate-300";
+                return "bg-slate-700/50 text-slate-300 border-slate-600/50";
             }
         }
 
@@ -1570,37 +1682,76 @@
             statusTableBody.innerHTML = '';
 
             if (data.length === 0) {
-                statusTableBody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-slate-500">No records match your filter.</td></tr>`;
+                statusTableBody.innerHTML = `<div class="col-span-full text-center text-slate-500 py-10">No records match your filter.</div>`;
                 return;
             }
 
-            data.forEach(item => {
-                const badgeClass = getStatusStyling(item.status);
+            // Grid View
+            if (currentViewMode === 'grid') {
+                statusTableBody.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4";
 
-                const row = document.createElement('tr');
-                row.className = 'border-b border-white/5 hover:bg-white/5 transition-colors group';
+                data.forEach(item => {
+                    const badgeClass = getStatusStyling(item.Status);
+                    const displayDate = item.Date;
 
-                row.innerHTML = `
-                    <td class="p-4 font-mono text-slate-300 group-hover:text-white transition-colors">
-                        ${item.date}
-                    </td>
-                    <td class="p-4 font-mono text-cyan-300">
-                        ${item.hour}
-                    </td>
-                    <td class="p-4 text-right">
-                        <span class="inline-block px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${badgeClass}">
-                            ${item.status}
-                        </span>
-                    </td>
-                `;
-                statusTableBody.appendChild(row);
-            });
+                    const card = document.createElement('div');
+                    card.className = 'group p-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:bg-white/10 transition-all duration-300 flex flex-col gap-2 relative overflow-hidden';
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] uppercase text-slate-500 tracking-widest font-bold">Date</span>
+                                <span class="text-lg font-mono text-white group-hover:text-cyan-300 transition-colors font-bold">${displayDate}</span>
+                            </div>
+                            <span class="px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider border ${badgeClass}">
+                                ${item.Status}
+                            </span>
+                        </div>
+                        <div class="w-full h-px bg-white/5 my-1"></div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] uppercase text-slate-500 tracking-widest">Logged</span>
+                            <span class="font-mono text-violet-300 font-bold">${item.Hour}</span>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-violet-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                    `;
+                    statusTableBody.appendChild(card);
+                });
+            }
+            // List View
+            else {
+                statusTableBody.className = "flex flex-col gap-2";
+
+                // Add header row for list view
+                const header = document.createElement('div');
+                header.className = "grid grid-cols-3 px-4 py-2 text-[10px] uppercase text-slate-500 tracking-widest font-bold border-b border-white/10 mb-2";
+                header.innerHTML = `<span>Date</span><span class="text-center">Logged</span><span class="text-right">Status</span>`;
+                statusTableBody.appendChild(header);
+
+                data.forEach(item => {
+                    const badgeClass = getStatusStyling(item.Status);
+
+                    const row = document.createElement('div');
+                    row.className = 'grid grid-cols-3 px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 items-center transition-colors';
+
+                    row.innerHTML = `
+                        <span class="font-mono text-white text-sm">${item.Date}</span>
+                        <span class="font-mono text-violet-300 text-sm text-center">${item.Hour}</span>
+                        <div class="text-right">
+                            <span class="px-2 py-0.5 rounded text-[9px] uppercase font-bold tracking-wider border inline-block ${badgeClass}">
+                                ${item.Status}
+                            </span>
+                        </div>
+                    `;
+                    statusTableBody.appendChild(row);
+                });
+            }
         }
 
         function populateHoursFilter(data) {
             const hoursSet = new Set();
             data.forEach(item => {
-                if (item.hour) hoursSet.add(item.hour);
+                // MODIFIED: Accessing capitalized key 'Hour'
+                if (item.Hour) hoursSet.add(item.Hour);
             });
 
             while (filterHours.options.length > 1) {
@@ -1626,24 +1777,45 @@
             const hoursVal = filterHours.value;
 
             const filteredData = statusDataCache.filter(item => {
-                const itemStatus = item.status ? item.status.toLowerCase() : "";
+                // MODIFIED: Accessing capitalized keys 'Status', 'Hour'
+                const itemStatus = item.Status ? item.Status.toLowerCase() : "";
                 const statusMatch = statusVal === "all" || itemStatus.includes(statusVal);
-                const hoursMatch = hoursVal === "all" || item.hour === hoursVal;
+                const hoursMatch = hoursVal === "all" || item.Hour === hoursVal;
                 return statusMatch && hoursMatch;
             });
 
             renderStatusTable(filteredData);
         }
 
+        // View Toggle Logic
+        viewGridBtn.addEventListener('click', () => {
+            if (currentViewMode !== 'grid') {
+                currentViewMode = 'grid';
+                viewGridBtn.classList.add('active');
+                viewListBtn.classList.remove('active');
+                filterTable();
+            }
+        });
+
+        viewListBtn.addEventListener('click', () => {
+            if (currentViewMode !== 'list') {
+                currentViewMode = 'list';
+                viewListBtn.classList.add('active');
+                viewGridBtn.classList.remove('active');
+                filterTable();
+            }
+        });
+
         async function openStatusModal() {
             showLoader("RETRIEVING LOGS...");
             statusModal.classList.add('active');
-            statusTableBody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-cyan-400 animate-pulse font-mono tracking-widest">CONNECTING TO DATABASE...</td></tr>`;
+            statusTableBody.innerHTML = `<div class="col-span-full text-center text-cyan-400 animate-pulse font-mono tracking-widest py-10">CONNECTING TO DATABASE...</div>`;
 
             filterStatus.value = "all";
             filterHours.innerHTML = '<option value="all">All Hours</option>';
 
             try {
+                // MODIFIED: Ensure empID is always passed in query param
                 const queryParam = currentUser.id ? `?empID=${currentUser.id}` : '';
 
                 const response = await fetchWithExponentialBackoff(`${N8N_GET_STATUS_URL}${queryParam}`, {
@@ -1659,7 +1831,7 @@
                         populateHoursFilter(data);
                         renderStatusTable(data);
                     } else {
-                        statusTableBody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-red-400">Invalid data format received.</td></tr>`;
+                        statusTableBody.innerHTML = `<div class="col-span-full text-center text-red-400 py-10">Invalid data format received.</div>`;
                         statusDataCache = [];
                     }
                 } else {
@@ -1667,7 +1839,7 @@
                 }
             } catch (error) {
                 console.error("Fetch error:", error);
-                statusTableBody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-red-400">Failed to load status records. Check connection.</td></tr>`;
+                statusTableBody.innerHTML = `<div class="col-span-full text-center text-red-400 py-10">Failed to load status records. Check connection.</div>`;
                 statusDataCache = [];
             } finally {
                 hideLoader();
@@ -1709,7 +1881,9 @@
             statusSpan.textContent = "PINGING...";
             manualTriggerBtn.classList.add('animate-pulse');
             try {
-                await fetchWithExponentialBackoff(N8N_MANUAL_TRIGGER_URL, { method: 'GET', headers: { 'ngrok-skip-browser-warning': 'true' } });
+                // MODIFIED: Updated to include empID query parameter
+                const url = `${N8N_MANUAL_TRIGGER_URL}?empID=${currentUser.id}`;
+                await fetchWithExponentialBackoff(url, { method: 'GET', headers: { 'ngrok-skip-browser-warning': 'true' } });
                 showMessage("Engine Triggered");
             } catch (error) { showMessage("Signal sent (blind)", false); }
             finally { setTimeout(() => { statusSpan.textContent = originalText; manualTriggerBtn.classList.remove('animate-pulse'); }, 1000); }
@@ -1727,7 +1901,12 @@
                 const response = await fetchWithExponentialBackoff(N8N_REWRITE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keywords: query }) });
                 let resultText = "";
                 try { const json = await response.json(); resultText = json.rewritten_text || await response.text(); } catch(e) { resultText = await response.text(); }
-                if (resultText) { workDoneTextarea.value = resultText.trim(); saveToLocal(); showMessage("Content polished."); }
+                if (resultText) {
+                    workDoneTextarea.value = resultText.trim();
+                    saveToLocal();
+                    updateActionButtonsVisibility(); // Update clear button visibility
+                    showMessage("Content polished.");
+                }
             } catch (error) { showMessage("AI Service Unavailable", true); }
             finally { suggestBtn.innerHTML = originalHTML; suggestBtn.disabled = false; checkFormValidity(); }
         });
@@ -1744,13 +1923,14 @@
             submitBtn.disabled = true;
             showLoader("TRANSMITTING REPORT...");
 
+            // MODIFIED: Added empID to payload, removed Mood/Blockers
             const payload = {
+                "empID": currentUser.id, // KEY CHANGE HERE: empID included
                 "Log ID": siNoInput.value,
                 "Date": dateInput.value,
                 "Daily Status Report": workDoneTextarea.value,
                 "StartTime": formatTimeForN8N(inTimeInput.value),
                 "EndTime": formatTimeForN8N(outTimeInput.value),
-                "EmployeeID": currentUser.id, // Include current user ID
                 "submittedAt": new Date().toISOString(),
                 "formMode": "web-submission"
             };
@@ -1760,9 +1940,11 @@
                 if (response.ok) {
                     fireConfetti();
                     showMessage("Report Logged Successfully!");
+
                     logForm.reset();
                     localStorage.removeItem('dailyLog_draft');
                     initializeDateTime();
+                    updateActionButtonsVisibility();
                     checkFormValidity();
                 } else { throw new Error("API responded with error"); }
             } catch (error) { showMessage("Transmission failed.", true); }
@@ -1775,6 +1957,7 @@
 
         // Initial setup for form validity
         checkFormValidity();
+        updateActionButtonsVisibility(); // Initial visibility check
     });
 </script>
 </body>
